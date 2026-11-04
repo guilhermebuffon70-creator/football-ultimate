@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Football Ultimate 3D — v1.9.1</title>
+<title>Football Ultimate 3D — v1.9.7</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#09141c;color:#eef5f8;font:15px system-ui,Arial;overflow-x:hidden}
 header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:#122431;border-bottom:1px solid #294451}
@@ -23,7 +23,7 @@ h1{font-size:18px;margin:0}.muted{color:#afc1cb}main{max-width:1200px;margin:14p
 
 #powerHUD{position:absolute;bottom:51px;left:12px;width:270px;max-width:calc(100% - 246px);padding:9px 12px;border-radius:11px;background:#091925e8;border:1px solid #638390a8;box-shadow:0 6px 20px #0008;pointer-events:none;display:none}
 #powerHUD.visible{display:block}.powerTop{display:flex;justify-content:space-between;align-items:center;gap:6px;font-weight:800;font-size:12px;margin-bottom:6px}
-#powerTrack{height:12px;border-radius:10px;overflow:hidden;background:#29414b;box-shadow:inset 0 1px 3px #000a}#powerFill{height:100%;width:0%;background:linear-gradient(90deg,#41e6ad,#a9ff73);border-radius:9px;transition:width 40ms linear}#powerHUD.shot #powerFill{background:linear-gradient(90deg,#ffdd71,#ff7348)}
+#powerTrack{height:12px;border-radius:10px;overflow:hidden;background:#29414b;box-shadow:inset 0 1px 3px #000a}#powerFill{height:100%;width:0%;background:linear-gradient(90deg,#41e6ad,#a9ff73);border-radius:9px;transition:width 40ms linear}#powerHUD.shot #powerFill{background:linear-gradient(90deg,#ffdd71,#ff7348)}#powerHUD.super #powerFill{background:linear-gradient(90deg,#ff8f43,#fd2b91)}#powerHUD.super{border-color:#ff70ba;box-shadow:0 0 18px #fa34804a}
 #powerHUD small{font-size:10px;color:#bfd1da;display:block;margin-top:5px}
 /* Menu inicial e telas de configuração */
 .menuField input[type="color"]{height:46px;min-width:58px;max-width:85px;padding:4px;cursor:pointer}
@@ -81,19 +81,54 @@ kbd{background:#263d49;border:1px solid #526c79;border-radius:4px;padding:1px 5p
 .touchActions{position:absolute;right:11px;bottom:17px;display:grid;grid-template-columns:repeat(3,58px);grid-auto-rows:52px;gap:7px;pointer-events:auto;touch-action:none}
 .touchActions button{padding:2px 4px;border-radius:13px;background:#0d3856e0;border:1px solid #bdefff9a;box-shadow:0 4px 12px #0009;color:#fff;font-size:11px;font-weight:900;line-height:1.15;touch-action:none;user-select:none;-webkit-user-select:none;min-width:0;min-height:0}
 .touchActions button:active,.touchActions button.pressed{background:#16846d;transform:scale(.94)}
-#touchShot{background:#d15c21e8;border-color:#ffcd7c}#touchPass{background:#108f67ea}#touchRun{background:#254b9be8}#touchKeeper{background:#314758ea;font-size:10px}
+#touchShot{background:#d15c21e8;border-color:#ffcd7c}#touchSuper{background:#9e2369ec;border-color:#ffc0e4}#touchSuper.lowEnergy{opacity:.45;filter:grayscale(.6)}#touchPass{background:#108f67ea}#touchRun{background:#254b9be8}#touchKeeper{background:#314758ea;font-size:10px}
 @media(max-width:700px){#stage:not(.touchMode) #staminaHUD{left:9px;right:auto;top:80px;bottom:auto;width:178px}}
 @media(max-width:460px){.touchJoystick{left:8px;bottom:15px;width:108px;height:108px}.touchActions{right:6px;bottom:10px;grid-template-columns:repeat(3,52px);grid-auto-rows:48px;gap:5px}.touchActions button{font-size:10px}#stage.touchMode #staminaHUD{width:152px}#stage.touchMode #radar{width:115px;height:75px}#stage.touchMode #powerHUD{top:154px}}
+
+/* Escalações e substituições: liberadas exclusivamente no intervalo. */
+#matchBanner.halftime{padding:9px 12px}
+#matchBanner.halftime .breakCard{width:min(680px,98%);max-height:100%;overflow-y:auto;padding:16px 20px;text-align:left}
+#matchBanner.halftime h2{font-size:clamp(20px,3.3vw,29px);margin:4px 0}
+#matchBanner.halftime .breakOverline{font-size:10px}
+#matchBanner.halftime .breakCountdown{font-size:clamp(28px,6vw,47px);line-height:1;color:#b0ffdf}
+#matchBanner.halftime .breakCountdown::after{content:' s restantes';font-size:12px;color:#c5dbd6;margin-left:5px}
+#matchBanner.halftime .breakDescription{font-size:12px;margin:4px 0 10px}
+.halfControls{display:flex;flex-direction:column;gap:9px;margin-top:8px}
+.halfTop{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.halfTop b{font-size:14px;color:#a6fcd5}.halfTop small{display:block;font-size:10px;color:#b8d3d6;margin-top:2px}
+#halfSubsCount{white-space:nowrap;color:#e4ffec;font-weight:800;font-size:12px}
+.halfFields{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.halfFields label,.halfFormation{font-size:11px;color:#e2eef1;font-weight:750;display:flex;flex-direction:column;gap:5px}
+.halfFields select,.halfFormation select{width:100%;font-size:13px;min-height:36px;background:#092537;color:#f2ffff;border:1px solid #57898d;border-radius:9px;padding:7px}
+#halfSubButton{background:#226c82;width:100%;padding:10px}
+#halfStatus{font-size:11px;line-height:1.4;color:#d5edf1;background:#102b3c;padding:8px;border-radius:8px;min-height:30px}
+#halfReady{background:#20a56b;width:100%;font-size:14px;padding:12px;box-shadow:0 4px 14px #0003}
+#halfSubButton:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:470px){.halfFields{grid-template-columns:1fr}.halfControls{gap:6px}#matchBanner.halftime .breakCard{padding:10px 12px}.halfFields select,.halfFormation select{min-height:33px}#halfReady{padding:10px}}
 </style>
 </head>
 <body>
-<header><h1>⚽ FOOTBALL ULTIMATE <span class="muted">3D • v1.9.1</span></h1><span class="muted">Protótipo de gameplay</span></header>
+<header><h1>⚽ FOOTBALL ULTIMATE <span class="muted">3D • v1.9.7</span></h1><span class="muted">Protótipo de gameplay</span></header>
 <main>
 <div id="stage"><canvas id="game"></canvas>
  <div class="hud"><span id="score">AZUL FC 0 — 0 VERMELHO FC</span><small id="clock">00:00 • 1º TEMPO • 3 min/tempo</small></div>
  <div id="message" aria-live="polite"></div>
  <div id="matchBanner" role="status" aria-live="polite" aria-label="Intervalo ou encerramento da partida" hidden>
-  <div class="breakCard"><div class="breakOverline">FOOTBALL ULTIMATE</div><h2 id="breakTitle">FIM DO PRIMEIRO TEMPO</h2><div id="breakSeconds" class="breakCountdown">5</div><div id="breakDescription" class="breakDescription">O segundo tempo começa automaticamente.</div></div>
+  <div class="breakCard"><div class="breakOverline">FOOTBALL ULTIMATE</div><h2 id="breakTitle">FIM DO PRIMEIRO TEMPO</h2><div id="breakSeconds" class="breakCountdown">5</div><div id="breakDescription" class="breakDescription">O segundo tempo começa automaticamente.</div>
+  <div id="halfControls" class="halfControls" hidden>
+   <div class="halfTop"><div><b>📋 BANCO DE RESERVAS</b><small>Até 5 substituições, somente no intervalo</small></div><span id="halfSubsCount">0 / 5 trocas</span></div>
+   <div class="halfFields">
+    <label>Jogador que vai sair<select id="halfOut" aria-label="Titular que sai"></select></label>
+    <label>Reserva que vai entrar<select id="halfIn" aria-label="Reserva que entra"></select></label>
+   </div>
+   <button id="halfSubButton" type="button" class="halfSubButton">🔁 CONFIRMAR SUBSTITUIÇÃO</button>
+   <label class="halfFormation">Formação para o segundo tempo<select id="halfFormation" aria-label="Formação no segundo tempo">
+    <option value="433">4-3-3</option><option value="442">4-4-2</option><option value="352">3-5-2</option>
+   </select></label>
+   <div id="halfStatus" role="status" aria-live="polite">Escolha quem sai e quem entra; os reservas começam com 100% de estamina.</div>
+   <button id="halfReady" type="button">✅ ESTOU PRONTO — COMEÇAR 2º TEMPO</button>
+  </div>
+ </div>
  </div>
  <div id="advantageHUD" hidden>⚖️ VANTAGEM — JOGADA CONTINUA</div>
  <div id="disciplineHUD" hidden><div id="disciplineTitle">FALTA!</div><div id="disciplineSubtitle">ÁRBITRO PAROU O JOGO</div></div>
@@ -101,7 +136,7 @@ kbd{background:#263d49;border:1px solid #526c79;border-radius:4px;padding:1px 5p
  <div id="cinematicHUD" hidden><div id="cinematicTitle">GOOOOOOL!</div><div id="cinematicSubtitle">COMEMORAÇÃO</div></div>
  <button id="replaySkip" hidden>Pular replay (R) ❯❯</button>
  <div id="restartHUD" hidden></div><div id="keeperRushHUD" hidden>🧤 GOLEIRO AVANÇANDO!</div><canvas id="radar" width="246" height="158" aria-label="Minimapa do campo"></canvas>
- <div id="staminaHUD" role="group" aria-label="Estamina do jogador" hidden><div id="staminaTop"><span id="staminaPlayer">JOGADOR 10</span><span id="staminaValue">100%</span></div><div id="staminaTrack" role="progressbar" aria-label="Energia" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div id="staminaFill"></div></div><small>+1% a cada 2s · Drible −20%</small></div>
+ <div id="staminaHUD" role="group" aria-label="Estamina do jogador" hidden><div id="staminaTop"><span id="staminaPlayer">JOGADOR 10</span><span id="staminaValue">100%</span></div><div id="staminaTrack" role="progressbar" aria-label="Energia" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div id="staminaFill"></div></div><small>+1% a cada 2s · Drible −20% · Superchute −50%</small></div>
  <div id="touchControls" aria-label="Comandos para celular">
   <div id="touchJoystick" class="touchJoystick" aria-label="Joystick para mover o jogador"><div id="touchThumb"></div></div>
   <div class="touchActions">
@@ -112,21 +147,27 @@ kbd{background:#263d49;border:1px solid #526c79;border-radius:4px;padding:1px 5p
    <button type="button" id="touchPass">↗️<br>Passe</button>
    <button type="button" id="touchShot">⚽<br>Chute</button>
    <button type="button" id="touchRun">🏃<br>Correr</button>
+   <button type="button" id="touchLob">🌈<br>Alto</button>
+   <button type="button" id="touchSuper">💥<br>Super</button>
   </div>
  </div>
  <div id="powerHUD"><div class="powerTop"><span id="chargeType">PASSE</span><span id="chargePercent">0%</span></div><div id="powerTrack"><div id="powerFill"></div></div><small>Solte para executar • mira pelo cursor do mouse</small></div>
- <div class="tip"><b>WASD/setas</b> mover · <b>Q</b> trocar · <b>T (alternar)</b> sair/voltar com goleiro · <b>Shift</b> correr · <b>direito</b> passe · <b>esquerdo</b> chute · <b>mouse</b> mirar · <b>Espaço</b> drible</div>
+ <div class="tip"><b>WASD/setas</b> mover · <b>Q</b> trocar · <b>T (alternar)</b> sair/voltar com goleiro · <b>Shift</b> correr · <b>direito</b> passe · <b>esquerdo</b> chute · <b>mouse</b> mirar · <b>F</b> passe alto · <b>Shift+F</b> chute alto · <b>C</b> superchute −50% · <b>E</b> desarme · <b>Espaço</b> drible</div>
  <div id="menuOverlay" role="dialog" aria-label="Configurar partida" aria-modal="true">
   <section class="menuCard">
    <div class="menuOverline">FOOTBALL ULTIMATE · MODO EXIBIÇÃO</div>
    <h2 id="menuHeading">Sua partida. Suas regras.</h2>
-   <p id="menuDescription">Escolha os times, a duração, a dificuldade e a qualidade gráfica antes de começar.</p>
+   <p id="menuDescription">Escolha escalação, times, duração, dificuldade e qualidade gráfica antes de começar.</p>
    <div class="menuForm">
     <label class="menuField">Seu time<input id="nameHome" type="text" maxlength="22" value="AZUL FC" autocomplete="off" /></label>
     <label class="menuField">Time adversário<input id="nameAway" type="text" maxlength="22" value="VERMELHO FC" autocomplete="off" /></label>
     <label class="menuField">Duração de cada tempo<select id="gameDuration"><option value="2">2 minutos</option><option value="3" selected>3 minutos</option><option value="5">5 minutos</option><option value="8">8 minutos</option><option value="10">10 minutos</option></select></label>
     <label class="menuField">Dificuldade da IA<select id="gameDifficulty"><option value="easy">Fácil</option><option value="normal" selected>Normal</option><option value="hard">Difícil</option><option value="legend">Lendário</option></select></label>
     <label class="menuField" style="grid-column:1/-1">Qualidade gráfica<select id="gameQuality" aria-label="Qualidade gráfica"><option value="low">Baixo — mais leve (Chromebook)</option><option value="medium" selected>Médio — equilíbrio entre visual e desempenho</option><option value="high">Alto — campo e jogadores mais bonitos</option><option value="ultra">Ultra — alta resolução e máximo detalhe</option></select><small id="qualityHint" style="font-weight:500;color:#9df0ce">Médio: bom equilíbrio para computadores comuns.</small></label>
+    <label class="menuField" style="grid-column:1/-1">Formação tática
+     <select id="gameFormation"><option value="433" selected>4-3-3 — ataque pelas pontas</option><option value="442">4-4-2 — equilíbrio</option><option value="352">3-5-2 — domínio do meio-campo</option></select>
+     <small style="font-weight:500;color:#9df0ce">Também é possível mudar a formação durante o intervalo.</small>
+    </label>
     <label class="menuField" style="grid-column:1/-1">Modo de controle
       <select id="gameInputMode" aria-label="Escolher controles"><option value="desktop" selected>💻 Computador — teclado e mouse</option><option value="mobile">📱 Celular — joystick e botões na tela</option></select>
       <small style="font-weight:500;color:#9df0ce">No celular, mova o joystick e toque no campo para mirar.</small>
@@ -146,11 +187,11 @@ kbd{background:#263d49;border:1px solid #526c79;border-radius:4px;padding:1px 5p
 <div class="panel controls">
  <button id="play">Configurações / reiniciar</button><button class="alt" id="pause">Pausar</button>
  <button class="alt" id="switch">Trocar jogador (Q)</button><button class="alt" id="dribble">Driblar (Espaço)</button>
- <span class="muted" id="status">v1.9.1 · Arbitragem equilibrada e gráficos ajustáveis</span>
+ <span class="muted" id="status">v1.9.7 · Superchute (C) gasta 50% de estamina</span>
 </div>
 <div class="grid">
- <div class="panel"><b>Controles de campo</b><p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> movimentar · <kbd>Shift</kbd> sprint · <kbd>Espaço</kbd> driblar</p><p><b>Botão direito</b> segure para carregar passe, solte para executar · <b>Botão esquerdo</b> segure para carregar chute, solte para executar · <b>Mouse</b> mire na direção desejada · <kbd>E</kbd> desarmar · <kbd>Q</kbd> trocar jogador · <kbd>T</kbd> pressione uma vez para o goleiro avançar e novamente para cancelar; também cancela quando seu time recupera a bola · <kbd>J</kbd> e <kbd>K</kbd> também podem ser segurados para carregar passe e chute.</p></div>
- <div class="panel"><b>Novidades da v1.9.1</b><p>• Faltas, cobranças com mira, pênaltis, cartões amarelos e vermelhos, expulsões e lei da vantagem.</p><p>• Árbitro com apito e câmera especial para infrações; dois amarelos geram expulsão.</p><p>• Quatro níveis de gráficos: Baixo, Médio, Alto e Ultra. Ultra acrescenta textura detalhada, torcida e acabamentos nos jogadores.</p><p>• Estamina visível por jogador: regenera 1% em 2s e cada drible consome 20%. Modo celular com joystick e botões de passe, chute, drible, desarme e corrida.</p><p>• Mantidos replays em câmera lenta, comemorações, rede animada, contagem e controles existentes.</p></div>
+ <div class="panel"><b>Controles de campo</b><p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> movimentar · <kbd>Shift</kbd> sprint · <kbd>Espaço</kbd> driblar</p><p><b>Botão direito</b> segure para carregar passe, solte para executar · <b>Botão esquerdo</b> segure para carregar chute, solte para executar · <b>Mouse</b> mire na direção desejada · <kbd>E</kbd> desarmar · <kbd>Q</kbd> selecionar defensor mais próximo do adversário · <kbd>T</kbd> pressione uma vez para o goleiro avançar e novamente para cancelar; também cancela quando seu time recupera a bola · <kbd>F</kbd> passe alto · <kbd>Shift</kbd> + <kbd>F</kbd> chute alto · <kbd>C</kbd> superchute (custa 50% da estamina; segure para potência) · <kbd>J</kbd> e <kbd>K</kbd> também podem ser segurados para carregar passe e chute.</p></div>
+ <div class="panel"><b>Novidades da v1.9.7</b><p>• <b>Superchute (C)</b>: segure para carregar e solte para disparar uma finalização muito forte. Gasta <b>50% de estamina</b> por tentativa executada; é necessário ter 50% para chutar. No celular, há um botão dedicado.</p><p>• <b>Tecla Q inteligente</b>: escolhe o jogador mais próximo do adversário com a bola (ou da bola solta).</p><p>• <b>Pênalti corrigido</b>: bola parada na marca oficial do campo, cobrador atrás da bola e chute saindo do ponto correto.</p><p>• <b>F</b> para passe alto e <b>Shift + F</b> para chute alto; segure para controlar a potência.</p><p>• <b>Goleiros aprimorados</b>: saídas mais precisas, saltos para bolas perigosas, antecipação de chutes, interceptação de cruzamentos e passes para companheiros mais livres.</p><p>• <b>Escalações 4-3-3, 4-4-2 e 3-5-2</b> no menu inicial, com possibilidade de mudar no intervalo.</p><p>• <b>Substituições somente no intervalo</b>: 30 segundos, até 5 trocas, reservas descansados e botão ESTOU PRONTO.</p><p>• Faltas, cobranças com mira, pênaltis, cartões amarelos e vermelhos, expulsões e lei da vantagem.</p><p>• Árbitro com apito e câmera especial para infrações; dois amarelos geram expulsão.</p><p>• Quatro níveis de gráficos: Baixo, Médio, Alto e Ultra. Ultra acrescenta textura detalhada, torcida e acabamentos nos jogadores.</p><p>• Estamina visível por jogador: regenera 1% em 2s e cada drible consome 20%. Modo celular com joystick e botões de passe, chute, drible, desarme e corrida.</p><p>• Mantidos replays em câmera lenta, comemorações, rede animada, contagem e controles existentes.</p></div>
 </div>
 </main>
 <div id="bootStatus" style="position:fixed;z-index:100;bottom:16px;left:16px;right:16px;max-width:700px;margin:auto;background:#102f3b;color:white;border:1px solid #65dcb7;border-radius:12px;padding:13px 16px;font:14px system-ui;box-shadow:0 5px 25px #0008">Carregando motor 3D... Aguarde alguns segundos.</div>
@@ -172,7 +213,8 @@ if(!THREE){document.querySelector('#message').textContent='Motor 3D indisponíve
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x91b9c8);scene.fog=new THREE.Fog(0x91b9c8,76,165);
 const FIELD_SCALE=1.0125*1.0125; // Mais 1,25% sobre o tamanho da versão 1.2 (acumulado).
 const HALF_X=41*FIELD_SCALE, HALF_Z=27*FIELD_SCALE, EDGE_X=HALF_X-.9, EDGE_Z=HALF_Z-1, GOAL_WIDTH=4.3*FIELD_SCALE, GOAL_HEIGHT=2.85*FIELD_SCALE;
-const BALL_RADIUS=.38, POST_RADIUS=.10;
+const BALL_RADIUS=.38, POST_RADIUS=.10, PENALTY_SPOT_OFFSET=8.6;
+function penaltySpotX(attackingTeam){return (attackingTeam===0?1:-1)*(HALF_X-PENALTY_SPOT_OFFSET)}
 const camera=new THREE.PerspectiveCamera(43,1,.1,260);camera.position.set(-8,30,40);camera.lookAt(0,0,0);let cameraLookX=0,cameraLookZ=0;
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:"high-performance"});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.outputColorSpace=THREE.SRGBColorSpace;
@@ -231,7 +273,7 @@ line(-HALF_X,-HALF_Z,HALF_X,-HALF_Z);line(-HALF_X,HALF_Z,HALF_X,HALF_Z);
 line(-HALF_X,-HALF_Z,-HALF_X,HALF_Z);line(HALF_X,-HALF_Z,HALF_X,HALF_Z);line(0,-HALF_Z,0,HALF_Z);
 arc(0,0,7.2,0,Math.PI*2,112);spot(0,0);
 for(const sign of [-1,1]){
- let end=sign*HALF_X,pen=sign*(HALF_X-12.9),small=sign*(HALF_X-4.3),spotX=sign*(HALF_X-8.6);
+ let end=sign*HALF_X,pen=sign*(HALF_X-12.9),small=sign*(HALF_X-4.3),spotX=sign*(HALF_X-PENALTY_SPOT_OFFSET);
  line(end,-16.1,pen,-16.1);line(pen,-16.1,pen,16.1);line(pen,16.1,end,16.1);
  line(end,-7.3,small,-7.3);line(small,-7.3,small,7.3);line(small,7.3,end,7.3);
  spot(spotX,0,.17);
@@ -525,9 +567,22 @@ const home=[
 const away=[
  makePlayer(1,false,9),makePlayer(1,false,7),makePlayer(1,false,11),makePlayer(1,false,8),makePlayer(1,false,6),makePlayer(1,false,5),makePlayer(1,false,2),makePlayer(1,false,3),makePlayer(1,false,4),makePlayer(1,false,10),makePlayer(1,true,1)
 ];
-// Coordenadas da equipe azul: todos começam antes da linha central (x <= 0).
-// A equipe vermelha é espelhada no eixo x, preservando cada posição tática.
-const formation=[[-3.2,0],[-15,-18],[-15,18],[-18,-8],[-18,8],[-23.5,0],[-29,-18],[-29,18],[-33,-8],[-33,8],[-39.4,0]];
+// Sete reservas do usuário ficam ocultos até a substituição durante o intervalo.
+const homeBench=[12,13,14,15,16,17,18].map(n=>makePlayer(0,false,n));
+for(const p of homeBench){p.group.visible=false;p.group.position.set(999,0,999);p.subbedOut=false;p.usedAsSub=false;}
+const initialHome=home.slice(),initialHomeBench=homeBench.slice();
+// Cada formação define as 10 posições de linha e o goleiro (índice 10).
+// O time adversário é espelhado em relação ao eixo longitudinal do campo.
+const formationPresets={
+ '433':[[-3.2,0],[-15,-18],[-15,18],[-18,-8],[-18,8],[-23.5,0],[-29,-18],[-29,18],[-33,-8],[-33,8],[-39.4,0]],
+ '442':[[-10,-8],[-10,8],[-21,-19],[-20,-7],[-20,7],[-21,19],[-29,-18],[-29,18],[-33,-8],[-33,8],[-39.4,0]],
+ '352':[[-11,-7],[-11,7],[-19,-21],[-19,-10],[-21,0],[-19,10],[-19,21],[-31,-14],[-34,0],[-31,14],[-39.4,0]]
+};
+let formation=formationPresets['433'],formationName='433';
+function chooseFormation(name){
+ formationName=Object.hasOwn(formationPresets,name)?name:'433';
+ formation=formationPresets[formationName];
+}
 function setFormation(){
  for (const [team,list] of [[0,home],[1,away]]) list.forEach((p,i)=>{
   if(p.sentOff){p.group.visible=false;p.group.position.set(999,0,999);return;}
@@ -581,7 +636,7 @@ function applyGraphicsQuality(level){
  ballMat.map.anisotropy=Math.min(settings.anis,renderer.capabilities.getMaxAnisotropy());ballMat.map.needsUpdate=true;
  stands.visible=graphicsQuality==='high'||graphicsQuality==='ultra';
  crowd.visible=graphicsQuality==='ultra';crowd.count=graphicsQuality==='ultra'?560:0;
- for(const p of allPlayers)p.fine.visible=isHD;
+ for(const p of [...allPlayers,...homeBench])p.fine.visible=isHD;
  scene.fog.far=graphicsQuality==='ultra'?205:graphicsQuality==='high'?184:155;
  document.querySelector('#qualityHint').textContent=qualityNotes[graphicsQuality];
  const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);
@@ -773,18 +828,88 @@ const PENALTY_DEPTH=12.9,PENALTY_WIDTH=16.1;
 
 let matchTransition=null;
 const matchBanner=document.querySelector('#matchBanner'),breakTitle=document.querySelector('#breakTitle'),breakSeconds=document.querySelector('#breakSeconds'),breakDescription=document.querySelector('#breakDescription');
+const halfControls=document.querySelector('#halfControls');
+const halfOut=document.querySelector('#halfOut'),halfIn=document.querySelector('#halfIn');
+const halfSubsCount=document.querySelector('#halfSubsCount'),halfStatus=document.querySelector('#halfStatus');
+const halfFormation=document.querySelector('#halfFormation'),halfSubButton=document.querySelector('#halfSubButton'),halfReady=document.querySelector('#halfReady');
+const MAX_HALFTIME_SUBS=5;
+let halftimeSubs=0;
+const fieldPositionLabels={
+ '433':['ATA','PE','PD','MC','MC','VOL','LE','LD','ZAG','ZAG','GOL'],
+ '442':['ATA','ATA','ME','MC','MC','MD','LE','LD','ZAG','ZAG','GOL'],
+ '352':['ATA','ATA','ALA','MC','VOL','MC','ALA','ZAG','ZAG','ZAG','GOL']
+};
+function refreshHalfSelections(){
+ const wantedField=halfOut.value,wantedBench=halfIn.value;
+ halfOut.replaceChildren();halfIn.replaceChildren();
+ home.forEach((p,i)=>{
+  if(i===10||p.sentOff||p.subbedOut)return;
+  const tag=(fieldPositionLabels[formationName]||fieldPositionLabels['433'])[i];
+  halfOut.add(new Option(`Camisa ${p.num} • ${tag} • ${Math.round(p.stamina)}%`,String(i)));
+ });
+ homeBench.forEach((p,i)=>{
+  if(p.subbedOut||p.usedAsSub)return;
+  halfIn.add(new Option(`Reserva ${p.num} • ${Math.round(p.stamina)}%`,String(i)));
+ });
+ if([...halfOut.options].some(x=>x.value===wantedField))halfOut.value=wantedField;
+ if([...halfIn.options].some(x=>x.value===wantedBench))halfIn.value=wantedBench;
+ halfSubsCount.textContent=`${halftimeSubs} / ${MAX_HALFTIME_SUBS} trocas`;
+ halfSubButton.disabled=halftimeSubs>=MAX_HALFTIME_SUBS||!halfOut.options.length||!halfIn.options.length;
+}
+function halftimeSubstitution(){
+ // Fora do intervalo não é permitido realizar alterações na escalação.
+ if(!matchTransition||matchTransition.kind!=='half'||matchTransition.endAt<=performance.now())return;
+ if(halftimeSubs>=MAX_HALFTIME_SUBS)return;
+ const fieldIndex=Number(halfOut.value),benchIndex=Number(halfIn.value);
+ if(!Number.isInteger(fieldIndex)||fieldIndex<0||fieldIndex>9||!Number.isInteger(benchIndex)||benchIndex<0||benchIndex>=homeBench.length)return;
+ const outgoing=home[fieldIndex],incoming=homeBench[benchIndex];
+ if(!outgoing||!incoming||outgoing.sentOff||outgoing.subbedOut||incoming.subbedOut||incoming.usedAsSub)return;
+ outgoing.subbedOut=true;outgoing.group.visible=false;outgoing.ring.visible=false;outgoing.group.position.set(999,0,999);
+ incoming.usedAsSub=true;incoming.group.visible=true;incoming.group.position.set(formation[fieldIndex][0]*FIELD_SCALE,0,formation[fieldIndex][1]*FIELD_SCALE);
+ incoming.group.rotation.set(0,Math.PI/2,0);incoming.fine.visible=graphicsQuality==='high'||graphicsQuality==='ultra';
+ incoming.vx=incoming.vz=0;incoming.cool=0;incoming.dribbleCool=0;incoming.stunned=0;
+ home[fieldIndex]=incoming;
+ homeBench[benchIndex]=outgoing; // Quem saiu fica no banco e não pode retornar.
+ allPlayers[fieldIndex]=incoming; // Replay, minimapa e atualizações usam apenas atletas em campo.
+ if(selected===outgoing){selected=incoming;home.forEach(p=>p.ring.visible=p===selected)}
+ if(owner===outgoing)owner=null;
+ halftimeSubs++;
+ halfStatus.textContent=`✔ Camisa ${outgoing.num} saiu; camisa ${incoming.num} entrou com ${Math.round(incoming.stamina)}% de estamina.`;
+ refreshHalfSelections();updateStaminaHUD();
+}
+function finishMatchTransition(){
+ if(!matchTransition)return;
+ const kind=matchTransition.kind;
+ matchTransition=null;matchBanner.hidden=true;matchBanner.classList.remove('halftime');halfControls.hidden=true;
+ if(kind==='half'){
+  half=2;clock=0;kickoff(1);paused=false;beginKickoffCountdown('half');updateMatchClock();updateStaminaHUD();
+ }else finishMatch();
+}
+halfSubButton.addEventListener('click',halftimeSubstitution);
+halfReady.addEventListener('click',()=>{if(matchTransition?.kind==='half')finishMatchTransition()});
+halfFormation.addEventListener('change',()=>{
+ if(matchTransition?.kind!=='half')return;
+ chooseFormation(halfFormation.value);refreshHalfSelections();
+ halfStatus.textContent=`Formação ${formationName.replace(/(\d)(\d)(\d)/,'$1-$2-$3')} escolhida para o segundo tempo.`;
+});
 function renderMatchTransition(seconds){
  if(!matchTransition)return;
- breakTitle.textContent=matchTransition.kind==='half'?'FIM DO PRIMEIRO TEMPO':'FIM DE JOGO!';
- breakDescription.textContent=matchTransition.kind==='half'?'O segundo tempo começa automaticamente.':'Exibindo o resultado final em instantes.';
- breakSeconds.textContent=String(Math.max(1,Math.ceil(seconds)));
+ breakTitle.textContent=matchTransition.kind==='half'?'INTERVALO • SUBSTITUIÇÕES':'FIM DE JOGO!';
+ breakDescription.textContent=matchTransition.kind==='half'?'Você tem 30 segundos para organizar seu time. Clique em ESTOU PRONTO para continuar antes do fim.':'Exibindo o resultado final em instantes.';
+ breakSeconds.textContent=String(Math.max(0,Math.ceil(seconds)));
 }
 function startMatchTransition(kind,now){
  if(matchTransition)return;
  disciplineSequence=null;advantagePlay=null;disciplineHUD.hidden=true;advantageHUD.hidden=true;referee.card.visible=false;
- matchTransition={kind,endAt:now+(kind==='half'?5000:3000)};goalSequence=null;kickoffCountdown=null;cinematicHUD.hidden=true;kickoffHUD.hidden=true;replaySkip.hidden=true;
+ matchTransition={kind,endAt:now+(kind==='half'?30000:3000)};goalSequence=null;kickoffCountdown=null;cinematicHUD.hidden=true;kickoffHUD.hidden=true;replaySkip.hidden=true;
  paused=true;keys={};userKeeperRush=false;home[10].rushing=false;cancelCharge();passAssist=null;showRestartHUD('');
- matchBanner.hidden=false;renderMatchTransition(kind==='half'?5:3);
+ matchBanner.hidden=false;matchBanner.classList.toggle('halftime',kind==='half');halfControls.hidden=kind!=='half';
+ if(kind==='half'){
+  halftimeSubs=0;halfFormation.value=formationName;
+  halfStatus.textContent='Escolha um titular e um reserva. Você pode fazer até 5 trocas; o goleiro não pode ser substituído nesta versão.';
+  refreshHalfSelections();
+ }
+ renderMatchTransition(kind==='half'?30:3);
  document.querySelector('#pause').textContent='Pausar';
  document.querySelector('#message').textContent='';messageTimer=0;
 }
@@ -792,11 +917,7 @@ function updateMatchTransition(now){
  if(!matchTransition)return;
  const remaining=Math.max(0,(matchTransition.endAt-now)/1000);
  if(remaining>0){renderMatchTransition(remaining);return}
- const kind=matchTransition.kind;
- matchTransition=null;matchBanner.hidden=true;
- if(kind==='half'){
-  half=2;clock=0;kickoff(1);paused=false;beginKickoffCountdown('half');updateMatchClock();
- }else finishMatch();
+ finishMatchTransition();
 }
 const aiLevels={
  easy:{pace:.77,pressure:.67,steal:.12,shot:.78,decision:1.35,dive:.65},
@@ -818,7 +939,7 @@ function showRestartHUD(t){
 const ballState={x:0,y:.4,z:0,vx:0,vy:0,vz:0,spinY:0,lastX:0,lastY:.4,lastZ:0,releasedBy:null,releaseTimer:0,isShot:false,postCooldown:0};
 // Um comando dura até soltar o botão/tecla; a força satura rapidamente em 100%.
 // Passe chega ao máximo em 0,55 s; chute em 0,80 s. Cada barra tem seu próprio limite.
-const charge={type:null,source:null,actor:null,seconds:0},CHARGE_TIME={pass:.55,shot:.80};
+const charge={type:null,source:null,actor:null,seconds:0},CHARGE_TIME={pass:.55,shot:.80,lob:.65,lobShot:.80,superShot:1.05};
 const powerHUD=document.querySelector('#powerHUD'),chargeType=document.querySelector('#chargeType'),chargePercent=document.querySelector('#chargePercent'),powerFill=document.querySelector('#powerFill');
 const pointer={x:0,y:0,valid:false};
 const aimRaycaster=new THREE.Raycaster(),groundAimPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0),aimWorldPoint=new THREE.Vector3();
@@ -849,6 +970,8 @@ function updateStaminaHUD(){
  staminaFill.style.width=clamp(selected.stamina,0,100)+'%';
  staminaFill.style.background=level<=25?'linear-gradient(90deg,#f04745,#ff9a59)':level<=55?'linear-gradient(90deg,#e3a73a,#ffe07e)':'linear-gradient(90deg,#2fba7b,#78f3a7)';
  document.querySelector('#staminaTrack').setAttribute('aria-valuenow',String(level));
+ document.querySelector('#touchSuper').classList.toggle('lowEnergy',selected.stamina<50);
+ document.querySelector('#touchSuper').setAttribute('aria-label',selected.stamina>=50?'Superchute: custa 50% de estamina':'Superchute indisponível: menos de 50% de estamina');
 }
 function pos(p){return p.group.position}
 function d2(a,b){return Math.hypot(a.x-b.x,a.z-b.z)}
@@ -928,13 +1051,16 @@ function kick(p,targetX,targetZ,power,isShot=false){
  // Assim, um clique no próprio jogador não gera uma bola com velocidade zero.
  if(d<.35){dx=Math.sin(p.group.rotation.y);dz=Math.cos(p.group.rotation.y);d=Math.hypot(dx,dz)||1}
  const ux=dx/d,uz=dz/d;
+ const isPenalty=!!(restart&&restart.phase==='ready'&&restart.taker===p&&restart.kind==='penalty');
+ const spotX=isPenalty?restart.x:0,spotZ=isPenalty?restart.z:0;
  owner=null;lastTouch=p.team;
  const isThrow=!!(restart&&restart.phase==='ready'&&restart.taker===p&&restart.kind==='throw');
  if(restart&&restart.phase==='ready'&&restart.taker===p){restart=null;showRestartHUD('')}
- // A bola sai à frente do pé/mão do atleta e não pode ser recuperada pelo
- // próprio chutador imediatamente. Isso corrige a reposição do goleiro.
+ // No pênalti a trajetória começa da marca, não do pé atrás da bola.
  const offset=isThrow?.78:(p.keeper?1.72:1.04);
- ballState.x=q.x+ux*offset;ballState.z=q.z+uz*offset;ballState.y=isThrow?2.35:(p.keeper?.9:.47);
+ ballState.x=isPenalty?spotX:q.x+ux*offset;
+ ballState.z=isPenalty?spotZ:q.z+uz*offset;
+ ballState.y=isPenalty?BALL_RADIUS:(isThrow?2.35:(p.keeper?.9:.47));
  ballState.vx=ux*power;ballState.vz=uz*power;
  ballState.vy=isThrow?clamp(power*.07,1.2,3.4):(isShot?clamp(power*.095,2.0,4.8):clamp(power*.035,.30,1.15));
  // giro inicial: mais forte no chute e moderado no passe, para a bola rodar no ar e no chão
@@ -949,6 +1075,38 @@ function kick(p,targetX,targetZ,power,isShot=false){
  if(p.team===0&&!isShot){
   const receiver=nearestPassReceiver(p,targetX,targetZ);
   if(receiver){passAssist={receiver,targetX,targetZ,timer:3.5};selectPlayer(receiver)}
+ }
+}
+function loftKick(p,targetX,targetZ,power,isShot=false){
+ if(!p||owner!==p)return;
+ // Um passe alto / cavadinha usa mais componente vertical que a bola rasteira.
+ const wasPenalty=!!(restart&&restart.phase==='ready'&&restart.taker===p&&restart.kind==='penalty');
+ kick(p,targetX,targetZ,power,isShot);
+ const horizontal=Math.hypot(ballState.vx,ballState.vz);
+ // Passes: arco pronunciado; chute alto: bola rápida, mas com elevação.
+ ballState.vy=isShot?clamp(horizontal*.15,4.0,7.3):clamp(horizontal*.29,5.1,9.0);
+ if(wasPenalty)ballState.vy=Math.min(ballState.vy,5.5);
+ ballState.spinY+=(isShot?2.2:1.0);
+}
+function goalkeeperDistribute(p){
+ // Procura colega livre, sem chutar aleatoriamente para o adversário.
+ if(!p||!p.keeper||owner!==p)return;
+ const team=p.team,allies=(team===0?home:away).slice(0,10).filter(x=>!x.sentOff);
+ const rivals=(team===0?away:home).slice(0,10).filter(x=>!x.sentOff);
+ if(!allies.length)return;
+ const q=pos(p),forward=team===0?1:-1;
+ const options=allies.map(a=>{
+  const v=pos(a),dist=Math.hypot(v.x-q.x,v.z-q.z);
+  const free=rivals.length?Math.min(...rivals.map(r=>Math.hypot(pos(r).x-v.x,pos(r).z-v.z))):15;
+  const progress=(v.x-q.x)*forward;
+  // Recompensa segurança, progressão e passes curtos.
+  const score=Math.min(free,10)*1.8+Math.min(progress,22)*.17-Math.abs(dist-14)*.42-(free<2.3?13:0);
+  return {a,v,dist,score};
+ }).sort((a,b)=>b.score-a.score);
+ const target=options[0];
+ if(target){
+  const power=clamp(12.5+target.dist*.54,15.0,29.5);
+  kick(p,target.v.x,target.v.z,power,false);
  }
 }
 function nearestPassReceiver(p,targetX,targetZ){
@@ -990,30 +1148,22 @@ function tackle(){
  }
 }
 function switchPlayer(){
- // Com a posse azul, mantém o controle do portador da bola.
+ // Q: prioridade absoluta ao atleta de linha mais próximo do adversário
+ // com a bola. Na bola solta, prioriza quem pode alcançá-la primeiro.
+ if(!game||paused||matchTransition||kickoffCountdown||goalSequence||disciplineSequence||restart)return;
  if(owner&&owner.team===0){selectPlayer(owner);return}
- if(owner&&owner.team===1){
-  // Prefere o miolo da linha de defesa (zagueiros 8 e 9), evitando
-  // puxar um lateral ou um defensor que ficou aberto demais.
-  const carrier=pos(owner),backLineX=(pos(home[8]).x+pos(home[9]).x)/2;
-  const centerBacks=[home[8],home[9]].sort((a,b)=>{
-   const score=p=>{
-    const q=pos(p);
-    const centrality=Math.abs(q.z)*2.3; // quanto menor |z|, mais centralizado
-    const lineShape=Math.abs(q.x-backLineX)*.65;
-    const interception=d2(q,carrier)*.38;
-    const outOfPosition=Math.max(0,q.x-carrier.x-1)*2.2; // evita defensor à frente da bola
-    return centrality+lineShape+interception+outOfPosition;
-   };
-   return score(a)-score(b);
-  });
-  selectPlayer(centerBacks[0]===selected?centerBacks[1]:centerBacks[0]);
-  return;
- }
- // Bola solta: troca para quem tem mais chance de interceptar.
- const sorted=home.slice(0,10).sort((a,b)=>d2(pos(a),ballState)-d2(pos(b),ballState));
- selectPlayer(sorted[0]===selected?(sorted[1]||sorted[0]):sorted[0]);
+ const target=owner&&owner.team===1?pos(owner):ballState;
+ const players=home.slice(0,10).filter(p=>!p.sentOff);
+ if(!players.length){selectPlayer(home[10]);return}
+ players.sort((a,b)=>{
+  const da=d2(pos(a),target),db=d2(pos(b),target);
+  return da-db;
+ });
+ const best=players[0];
+ // Se o defensor certo já estiver selecionado, não salta para outro pior.
+ if(best!==selected)selectPlayer(best);
 }
+
 // A mesma finta serve para o usuário e para a IA. Enquanto dribbleTime > 0,
 // a posse não pode ser roubada. Após o movimento, os desarmes voltam ao normal.
 function beginDribble(p,dx,dz,aiMove=false){
@@ -1045,113 +1195,138 @@ function dribble(){
 // Chutes no goleiro: exatamente 50% para encaixar, 50% para espalmar.
 // Uma espalmada desvia a bola para uma lateral, liberando-a para rebote.
 function goalkeeperSave(p){
- if(!p||owner||p.saveCooldown>0)return false;
- const q=pos(p);
- if(d2(q,ballState)>=2.15||ballState.y>=3.15||(ballState.releasedBy===p&&ballState.releaseTimer>0))return false;
- // O goleiro precisa de um breve tempo para perceber e defender um novo chute.
+ // Só é possível defender quando a bola está realmente ao alcance.
+ // Corrige as defesas à distância e a variável de posição não definida.
+ if(owner||p.sentOff||p.saveCooldown>0||ballState.releaseTimer>0&&ballState.releasedBy===p)return false;
+ const q=pos(p),forward=p.team===0?1:-1,goalX=p.team===0?-HALF_X:HALF_X;
+ const areaDepth=(q.x-goalX)*forward;
+ const ballDepth=(ballState.x-goalX)*forward;
+ if(areaDepth<.15||areaDepth>PENALTY_DEPTH+.2||ballDepth<-.35||ballDepth>PENALTY_DEPTH+1.2||Math.abs(ballState.z)>PENALTY_WIDTH+.35)return false;
+ const horizontal=Math.hypot(ballState.x-q.x,ballState.z-q.z);
+ const jumping=p.dive>.06;
+ const reach=jumping?2.12:1.28;
+ const maxHeight=jumping?3.07:2.30;
+ if(horizontal>reach||ballState.y>maxHeight||ballState.y<0)return false;
  if(ballState.isShot&&(p.shotReaction||0)<keeperReactionDelay())return false;
- if(ballState.isShot&&Math.random()>=.5){
-  const side=ballState.z-q.z;
-  const direction=Math.abs(side)>.32?Math.sign(side):(Math.random()<.5?-1:1);
-  const awayFromGoal=p.team===0?1:-1;
-  ballState.x=q.x+awayFromGoal*.9;
-  ballState.z=clamp(q.z+direction*1.55,-HALF_Z+.7,HALF_Z-.7);
-  ballState.y=Math.max(.7,Math.min(ballState.y,1.65));
-  ballState.vx=awayFromGoal*(8+Math.random()*3);
-  ballState.vz=direction*(14+Math.random()*5);
-  ballState.vy=1.4+Math.random()*1.7;
+ const wasShot=ballState.isShot;
+ if(wasShot&&Math.random()<.5){
+  // Espalma para longe do centro: rebote ainda pode ser disputado.
+  const difference=ballState.z-q.z;
+  const side=Math.abs(difference)>.27?Math.sign(difference):(Math.random()<.5?-1:1);
+  ballState.x=q.x+forward*.86;
+  ballState.z=clamp(q.z+side*1.10,-HALF_Z+.75,HALF_Z-.75);
+  ballState.y=Math.max(.72,Math.min(ballState.y,1.9));
+  ballState.vx=forward*(6.5+Math.random()*3.5);
+  ballState.vz=side*(13+Math.random()*5);
+  ballState.vy=1.35+Math.random()*1.55;
+  ballState.spinY=side*(4+Math.random()*3);
   ballState.isShot=false;
-  ballState.releasedBy=p;ballState.releaseTimer=.75;
-  p.saveCooldown=.9;p.dive=.65;p.diveZ=direction;p.diveX=awayFromGoal;
+  ballState.releasedBy=p;ballState.releaseTimer=.62;
+  p.saveCooldown=.75;p.dive=Math.max(p.dive,.48);
+  p.diveZ=side;p.diveX=forward;
   lastTouch=p.team;
-  setMessage('GOLEIRO ESPALMOU PARA O LADO!');
   return 'parry';
  }
- const wasShot=ballState.isShot;
  if(attachBall(p)){
-  p.holdTime=0;p.saveCooldown=.28;
-  setMessage(wasShot?'GOLEIRO ENCAIXOU!':'DEFESA DO GOLEIRO!');
-  // attachBall já zera a marca de chute.
+  p.holdTime=0;p.saveCooldown=.36;
+  p.dive=Math.max(p.dive,wasShot?.24:0);
   return 'catch';
  }
  return false;
 }
+
 // O goleiro pode avançar de propósito, mas nunca ultrapassa a grande área.
 // T controla o goleiro azul mesmo quando o usuário estiver com um jogador de linha.
 // O adversário decide avançar quando o atacante azul chega perto da área.
 function keeperAI(p,dt,team){
+ if(p.sentOff)return;
  if(team===0&&selected===p&&owner===p){p.rushing=false;return}
- const goalX=team===0?-HALF_X:HALF_X, forward=team===0?1:-1;
- const underAttack=!!owner&&owner.team!==team;
- const incoming=ballState.vx*(-forward)>.7;
- const incomingShot=!owner&&ballState.isShot&&incoming;
+ const goalX=team===0?-HALF_X:HALF_X,forward=team===0?1:-1;
+ const q=pos(p),underAttack=!!owner&&owner.team!==team;
+ const towardsGoal=ballState.vx*(-forward)>1.1;
+ const incomingShot=!owner&&ballState.isShot&&towardsGoal;
  p.shotReaction=incomingShot?Math.min(2,(p.shotReaction||0)+dt):0;
  const canReactToShot=!incomingShot||p.shotReaction>=keeperReactionDelay();
- const attacker=(owner&&owner.team!==team&&!owner.keeper)?pos(owner):null;
+ const attacker=owner&&owner.team!==team&&!owner.keeper?pos(owner):null;
  const attackerDepth=attacker?(attacker.x-goalX)*forward:Infinity;
- // IA: ativa quando o atacante chega perto da entrada da área (até 3,5 m antes).
+ // Saída automática do goleiro rival em ameaças reais à área.
  const aiThreat=team===1&&!!attacker&&attackerDepth>=-.3&&attackerDepth<=PENALTY_DEPTH+3.5&&Math.abs(attacker.z)<=PENALTY_WIDTH+2.5;
  if(aiThreat)p.rushMomentum=.58;
  else p.rushMomentum=Math.max(0,(p.rushMomentum||0)-dt);
- // Se o atacante chuta logo após atrair a saída, o goleiro continua
- // avançando brevemente para tentar bloquear a bola em movimento.
  const aiRush=aiThreat||(team===1&&!owner&&ballState.isShot&&p.rushMomentum>0);
+ // T continua funcionando como alternância, dentro do limite da grande área.
  const userRush=team===0&&userKeeperRush&&!restart&&owner!==p&&owner?.team!==0;
  const rushing=(aiRush||userRush)&&owner!==p;
  p.rushing=rushing;
- const q=pos(p);
+
+ const distanceToGoal=Math.abs(goalX-ballState.x);
+ const timeToLine=clamp(distanceToGoal/Math.max(1.1,Math.abs(ballState.vx)),0,1.0);
+ const predictedZ=towardsGoal?ballState.z+ballState.vz*timeToLine:ballState.z;
+ const inBoxX=(ballState.x-goalX)*forward>-1.0&&(ballState.x-goalX)*forward<PENALTY_DEPTH+2.5;
+ const incomingCross=!owner&&inBoxX&&ballState.y>1.05&&ballState.y<3.6&&
+   Math.abs(ballState.z)>GOAL_WIDTH-1&&Math.abs(ballState.z)<PENALTY_WIDTH+2&&Math.abs(ballState.vz)>1.4;
+ const crossInterceptX=clamp(ballState.x+ballState.vx*.19,
+   Math.min(goalX+forward*.7,goalX+forward*(PENALTY_DEPTH-.7)),
+   Math.max(goalX+forward*.7,goalX+forward*(PENALTY_DEPTH-.7)));
+ const crossInterceptZ=clamp(ballState.z+ballState.vz*.19,-PENALTY_WIDTH+.65,PENALTY_WIDTH-.65);
+
  if(rushing){
-  // Caminhar no Fácil/Normal; correr nos níveis Difícil/Lendário.
-  // T tem saída rápida, independente da dificuldade adversária.
   const rushSpeed=userRush?13.3:(difficulty==='legend'?14.2:difficulty==='hard'?12.4:6.4);
   const threat=attacker||ballState;
-  // Pequena antecipação apenas para chutes já soltos, sem previsão perfeita.
   const lead=!owner&&ballState.isShot?.08:0;
-  const desiredX=threat.x+(lead*ballState.vx);
-  const desiredZ=threat.z+(lead*ballState.vz);
+  const dx=threat.x+lead*ballState.vx,dz=threat.z+lead*ballState.vz;
   const bx=goalX+forward*.65,ex=goalX+forward*(PENALTY_DEPTH-.7);
-  const destX=clamp(desiredX,Math.min(bx,ex),Math.max(bx,ex));
-  const destZ=clamp(desiredZ,-PENALTY_WIDTH+.65,PENALTY_WIDTH-.65);
-  move(p,destX,destZ,rushSpeed,dt);
+  move(p,clamp(dx,Math.min(bx,ex),Math.max(bx,ex)),clamp(dz,-PENALTY_WIDTH+.65,PENALTY_WIDTH-.65),rushSpeed,dt);
  }else if(owner!==p){
-  const distance=Math.abs(goalX-ballState.x);
-  // Próximo da linha do gol quando o goleiro não foi chamado para avançar.
-  const depth=underAttack||incoming?1.05:1.6;
-  const targetX=goalX+forward*depth;
-  const timeToGoal=clamp(distance/Math.max(Math.abs(ballState.vx),9),0,.75);
-  const predictedZ=incoming?ballState.z+ballState.vz*timeToGoal:ballState.z*.68;
-  const targetZ=clamp(predictedZ*.86,-GOAL_WIDTH+.27,GOAL_WIDTH-.27);
-  const reactionZ=canReactToShot?targetZ:q.z;
-  move(p,targetX,reactionZ,7.15*(team===1?aiLevels[difficulty].pace:1),dt);
+  const scoringThreat=incomingShot&&Math.abs(predictedZ)<GOAL_WIDTH+1.15&&ballState.y<GOAL_HEIGHT+1;
+  const goalDepth=scoringThreat?clamp(1.25+Math.abs(ballState.vx)*.038,1.25,2.75):(underAttack?1.05:1.65);
+  let tx=goalX+forward*goalDepth;
+  let tz=clamp((scoringThreat?predictedZ:ballState.z*.68)*.86,-GOAL_WIDTH+.27,GOAL_WIDTH-.27);
+  let speed=7.15*(team===1?aiLevels[difficulty].pace:1);
+  if(incomingCross&&!scoringThreat&&canReactToShot){
+   // Cruzamento: sai alguns passos para tentar interceptar sem abandonar a área.
+   tx=clamp(crossInterceptX,Math.min(goalX+forward*.7,goalX+forward*5.0),Math.max(goalX+forward*.7,goalX+forward*5.0));
+   tz=clamp(crossInterceptZ,-GOAL_WIDTH-3,GOAL_WIDTH+3);
+   speed*=1.27;
+  }else if(scoringThreat){
+   speed*=1.30;
+  }
+  if(!scoringThreat||canReactToShot)move(p,tx,tz,speed,dt);
  }
+
  if(owner!==p){
-  // A mesma restrição também se aplica após as colisões dos jogadores.
-  const minDepth=.55;
-  // Ao cancelar com T ou recuperar a bola, o goleiro recua sem teletransporte.
   const currentDepth=(q.x-goalX)*forward;
   const maxDepth=rushing?PENALTY_DEPTH-.7:Math.min(PENALTY_DEPTH-.7,Math.max(2.65,currentDepth));
   const maxZ=rushing?PENALTY_WIDTH-.65:Math.min(PENALTY_WIDTH-.65,Math.max(GOAL_WIDTH-.12,Math.abs(q.z)));
-  const a=goalX+forward*minDepth,b=goalX+forward*maxDepth;
-  q.x=clamp(q.x,Math.min(a,b),Math.max(a,b));
+  const minX=goalX+forward*.55,maxX=goalX+forward*maxDepth;
+  q.x=clamp(q.x,Math.min(minX,maxX),Math.max(minX,maxX));
   q.z=clamp(q.z,-maxZ,maxZ);
  }
  constrainKeeperCarry(p);
- // Ao chegar ao portador, o goleiro também pode bloquear um avanço sem chute.
- // A proteção de drible continua valendo contra esse bloqueio.
+
+ // Bloqueio de atacante corpo-a-corpo quando está avançando.
  if(rushing&&attacker&&owner&&!owner.keeper&&owner.dribbleTime<=0&&p.saveCooldown<=0&&d2(q,attacker)<1.24){
   p.saveCooldown=.8;
-  if(Math.random()<.72&&attachBall(p)){
-   setMessage(team===0?'GOLEIRO SAIU E BLOQUEOU!':'GOLEIRO ADVERSÁRIO ANTECIPOU!');
-  }
+  if(Math.random()<.72)attachBall(p);
  }
- const danger=(team===0?ballState.x< -29:ballState.x>29)&&Math.abs(ballState.z)<GOAL_WIDTH+3&&ballState.vx*(-forward)>2;
- if(danger&&canReactToShot&&p.dive<=0&&Math.random()<dt*2.2*(team===1?aiLevels[difficulty].dive:1)){
-  p.dive=.65;p.diveZ=Math.sign(ballState.z-q.z||1);p.diveX=forward;
+
+ // Defesas com salto: só mergulha se a trajetória indicar perigo verdadeiro.
+ const ballNearGoal=(ballState.x-goalX)*forward<13.0;
+ const closeShot=incomingShot&&canReactToShot&&ballNearGoal&&Math.abs(predictedZ)<GOAL_WIDTH+.85&&ballState.y<GOAL_HEIGHT+.6;
+ if(closeShot&&p.dive<=0&&Math.abs(predictedZ-q.z)>.8&&Math.abs(predictedZ-q.z)<6.2){
+  p.dive=.65;p.diveZ=Math.sign(predictedZ-q.z);p.diveX=forward;
  }
- if(p.dive>0){p.dive-=dt;p.group.rotation.z=p.diveZ*.85;p.group.position.y=Math.sin((.65-p.dive)/.65*Math.PI)*.75}
- else{p.group.rotation.z*=.8;p.group.position.y=0}
+ if(incomingCross&&p.dive<=0&&canReactToShot&&Math.hypot(crossInterceptX-q.x,crossInterceptZ-q.z)<2.2&&ballState.y>1.85){
+  p.dive=.58;p.diveZ=Math.sign(crossInterceptZ-q.z||1);p.diveX=forward;
+ }
+ if(p.dive>0){
+  p.dive=Math.max(0,p.dive-dt);
+  p.group.rotation.z=p.diveZ*.86;
+  p.group.position.y=Math.max(0,Math.sin((.65-p.dive)/.65*Math.PI))*.75;
+ }else{p.group.rotation.z*=.78;p.group.position.y=0}
  if(!owner)goalkeeperSave(p);
 }
+
 function aiTeam(team,dt){
  const list=team===0?home:away, opponents=team===0?away:home,sign=team===0?1:-1,ai=team===1?aiLevels[difficulty]:aiLevels.normal;
  const available=list.slice(0,10).filter(p=>!p.sentOff&&(p!==selected || team!==0));
@@ -1247,7 +1422,7 @@ function userControl(dt){
  if(ax||az){
   selected.vx+=(ax/n*speed-selected.vx)*Math.min(1,dt*(selected.dribbleTime>0?19:11));
   selected.vz+=(az/n*speed-selected.vz)*Math.min(1,dt*(selected.dribbleTime>0?19:11));
-  if(sprint)selected.stamina=Math.max(0,selected.stamina-dt*10);
+  if(sprint)selected.stamina=Math.max(0,selected.stamina-dt*8);
  }else{
   selected.vx*=Math.pow(.04,dt);selected.vz*=Math.pow(.04,dt);
   // Recuperação unificada em recoverStamina: +1% a cada 2s.
@@ -1267,6 +1442,8 @@ function userControl(dt){
 // Paradas de jogo: lateral, escanteio ou tiro de meta, sem rebater nas placas.
 function scheduleRestart(kind,team,x,z){
  userKeeperRush=false;home[10].rushing=false;cancelCharge();passAssist=null;owner=null;
+ // Pênalti sempre na marca desenhada no gramado, nunca onde ocorreu a falta.
+ if(kind==='penalty'){x=penaltySpotX(team);z=0;}
  ballState.x=clamp(x,-HALF_X,HALF_X);ballState.z=clamp(z,-HALF_Z,HALF_Z);
  ballState.y=.4;ballState.vx=ballState.vy=ballState.vz=0;ballState.releasedBy=null;ballState.releaseTimer=0;ballState.isShot=false;
  restart={kind,team,x:ballState.x,z:ballState.z,phase:'wait',timer:1.3,taker:null,elapsed:0};
@@ -1284,12 +1461,16 @@ function beginRestart(){
  else if(sp.kind==='corner'){px=Math.sign(sp.x||1)*(HALF_X-1.3);pz=Math.sign(sp.z||1)*(HALF_Z-1.4)}
  else if(sp.kind==='freeKick'||sp.kind==='penalty'){px=sp.x;pz=sp.z;}
  else{px=(team===0?-1:1)*(HALF_X-5);pz=clamp(sp.z*.25,-5,5)}
- taker.group.position.set(px,0,pz);
+ // No pênalti o cobrador fica ATRÁS da bola; a bola permanece sobre a marca.
+ const kickerX=sp.kind==='penalty'?px-(team===0?1:-1)*1.30:px;
+ taker.group.position.set(kickerX,0,pz);
  taker.vx=taker.vz=0;taker.cool=0;taker.tackleTime=0;
  taker.group.rotation.y=sp.kind==='throw'?(sp.z>0?Math.PI:0):(team===0?Math.PI/2:-Math.PI/2);
  sp.phase='ready';sp.taker=taker;sp.timer=team===1?1.25:0;
  attachBall(taker);
- ballState.x=px;ballState.z=pz;ballState.y=sp.kind==='throw'?2.4:(taker.keeper?1.1:.4);
+ ballState.x=px;ballState.z=pz;ballState.y=sp.kind==='penalty'?BALL_RADIUS:(sp.kind==='throw'?2.4:(taker.keeper?1.1:.4));
+ ballState.lastX=ballState.x;ballState.lastY=ballState.y;ballState.lastZ=ballState.z;
+ ball.position.set(ballState.x,ballState.y,ballState.z);
  const action=sp.kind==='throw'?'Arremesso lateral':sp.kind==='corner'?'Cobrança de escanteio':sp.kind==='penalty'?'PÊNALTI':sp.kind==='freeKick'?'FALTA • MIRE NO GOL':'Tiro de meta';
  if(sp.kind==='penalty'){
   const keeper=(team===0?away:home)[10];pos(keeper).set((team===0?1:-1)*(HALF_X-.55),0,0);keeper.vx=keeper.vz=0;
@@ -1470,7 +1651,7 @@ function updateBall(dt){
   }else if(owner.keeper){
    ballState.x=q.x+(owner.team===0?1:-1)*.8;ballState.z=q.z;ballState.y=1.1;
    owner.holdTime=(owner.holdTime||0)+dt;
-   if(!restart&&owner.holdTime>(owner.team===0?8.5:1.45)&&charge.actor!==owner){const keeper=owner;pass(keeper);if(owner!==keeper)setMessage('GOLEIRO REPÕE A BOLA!')}
+   if(!restart&&owner.holdTime>(owner.team===0?8.5:1.65)&&charge.actor!==owner){const keeper=owner;goalkeeperDistribute(keeper)}
   }else if(owner!==selected){ballState.x=q.x+(owner.team===0?1:-1)*.75;ballState.z=q.z;ballState.y=.42}
  }else{
   // Subpassos para detectar impactos em chutes rápidos e ângulos fechados.
@@ -1546,6 +1727,11 @@ function animatePlayers(dt){
    a.rotation.z=(i?-.12:.12)+(i?-.5:.5)*tackleWeight;
    if(restart&&restart.phase==='ready'&&restart.taker===p&&restart.kind==='throw'){a.rotation.x=-2.7;a.rotation.z=(i?-.12:.12)}
   });
+  if(p.keeper&&p.dive>0){
+   // Braços esticados para alcançar a bola e pernas acompanhando o mergulho.
+   p.arms.forEach((arm,i)=>{arm.rotation.x=-2.12;arm.rotation.z=i===0?-.43:.43});
+   p.legs.forEach((leg,i)=>{leg.rotation.x=i===0?.55:-.32});
+  }
   if(!p.keeper)p.group.rotation.z=.27*tackleWeight;
   if(!moving)p.runPhase=animationClock*.65+p.num*.6;
   if(p.dive<=0&&p.group.position.y>0)p.group.position.y=Math.max(0,p.group.position.y-dt*2.5);
@@ -1562,6 +1748,16 @@ function kickoff(team){
  attachBall(taker);
 }
 function reset(){
+ // Recomeçar sempre com os titulares originais e os sete reservas disponíveis.
+ home.splice(0,home.length,...initialHome);homeBench.splice(0,homeBench.length,...initialHomeBench);
+ allPlayers.splice(0,11,...home);
+ for(const p of [...home,...away,...homeBench]){
+  p.sentOff=false;p.yellows=0;p.fouls=0;p.stamina=100;p.subbedOut=false;p.usedAsSub=false;
+  p.ring.visible=false;p.group.visible=!homeBench.includes(p);
+  if(homeBench.includes(p))p.group.position.set(999,0,999);
+ }
+ halftimeSubs=0;halfControls.hidden=true;matchBanner.classList.remove('halftime');
+ chooseFormation(document.querySelector('#gameFormation').value);
  applyTeamKits();applyGraphicsQuality(document.querySelector('#gameQuality').value);
  mobileMode=document.querySelector('#gameInputMode').value==='mobile';
  syncMobileMode();
@@ -1637,8 +1833,9 @@ function updateChargeHUD(){
  powerHUD.classList.toggle('visible',active);
  if(!active)return;
  const percent=Math.round(clamp(charge.seconds/CHARGE_TIME[charge.type],0,1)*100);
- powerHUD.classList.toggle('shot',charge.type==='shot');
- chargeType.textContent=charge.type==='shot'?'CHUTE — FORÇA':'PASSE — FORÇA';
+ powerHUD.classList.toggle('shot',charge.type==='shot'||charge.type==='lobShot');
+ powerHUD.classList.toggle('super',charge.type==='superShot');
+ chargeType.textContent=charge.type==='superShot'?'💥 SUPERCHUTE — −50% ENERGIA':charge.type==='shot'?'CHUTE — FORÇA':charge.type==='lobShot'?'CHUTE ALTO — FORÇA':charge.type==='lob'?'PASSE ALTO — FORÇA':'PASSE — FORÇA';
  chargePercent.textContent=percent+'%';powerFill.style.width=percent+'%';
 }
 function cancelCharge(){
@@ -1647,6 +1844,8 @@ function cancelCharge(){
 }
 function startCharge(type,source){
  if(!game||paused||kickoffCountdown||goalSequence||disciplineSequence||!owner||owner.team!==0||charge.type||(restart&&restart.phase!=='ready'))return;
+ // Superchute custa exatamente 50% e só inicia se houver energia suficiente.
+ if(type==='superShot'&&owner.stamina<50)return;
  selectPlayer(owner);
  charge.type=type;charge.source=source;charge.actor=owner;charge.seconds=0;
  updateChargeHUD();
@@ -1656,11 +1855,23 @@ function finishCharge(type,source){
  const athlete=charge.actor,ratio=clamp(charge.seconds/CHARGE_TIME[type],0,1);
  cancelCharge();
  if(!game||paused||!athlete||owner!==athlete||athlete.team!==0)return;
+ // Verifica novamente: o jogador pode ter gasto estamina correndo enquanto carregava.
+ if(type==='superShot'&&athlete.stamina<50)return;
  const target=getAimTarget(athlete);
  // Passe de 11 a 27 unidades/s; chute de 22 a 46 unidades/s.
  // Os dois chegam a 100% em seus tempos de carga, sem ultrapassar o limite.
- const isShot=type==='shot',power=isShot?22+ratio*24:11+ratio*16;
- kick(athlete,target.x,target.z,power,isShot);
+ const superShot=type==='superShot';
+ const isShot=superShot||type==='shot'||type==='lobShot',isLob=type==='lob'||type==='lobShot';
+ const power=superShot?(53+ratio*17)*0.80:type==='lobShot'?23+ratio*15:type==='lob'?13+ratio*16:isShot?22+ratio*24:11+ratio*16;
+ if(superShot){
+  // Debita uma única vez no lançamento, não no início da carga. Força reduzida em 20% na v1.9.7.
+  athlete.stamina=Math.max(0,athlete.stamina-50);
+  kick(athlete,target.x,target.z,power,true);
+  // Finalização rápida e tensa; rotação inicial mais intensa.
+  ballState.vy=1.65+ratio*2.05;
+  ballState.spinY*=1.35;
+ }else if(isLob)loftKick(athlete,target.x,target.z,power,isShot);
+ else kick(athlete,target.x,target.z,power,isShot);
 }
 function isEditingMenu(e){
  const el=e.target;
@@ -1731,6 +1942,8 @@ function bindTouchButton(id,action,release){
 }
 bindTouchButton('touchPass',()=>startCharge('pass','touch'),()=>finishCharge('pass','touch'));
 bindTouchButton('touchShot',()=>startCharge('shot','touch'),()=>finishCharge('shot','touch'));
+bindTouchButton('touchSuper',()=>startCharge('superShot','touch'),()=>finishCharge('superShot','touch'));
+bindTouchButton('touchLob',()=>startCharge('lob','touch'),()=>finishCharge('lob','touch'));
 bindTouchButton('touchRun',()=>{touchSprint=true},()=>{touchSprint=false});
 bindTouchButton('touchDribble',()=>dribble());
 bindTouchButton('touchTackle',()=>tackle());
@@ -1751,11 +1964,15 @@ document.addEventListener('keydown',e=>{
  if(!game||paused||e.repeat||kickoffCountdown||goalSequence||disciplineSequence){if(k==='r'&&goalSequence?.phase==='replay')finishGoalSequence();return;}
  if(k==='q')switchPlayer();if(k==='e')tackle();if(k===' ')dribble();if(k==='t')toggleGoalkeeperRush();
  if(k==='j')startCharge('pass','keyboard');if(k==='k')startCharge('shot','keyboard');
+ if(k==='c')startCharge('superShot','keyboard');
+ if(k==='f')startCharge(e.shiftKey?'lobShot':'lob','keyboard');
 });
 document.addEventListener('keyup',e=>{
  if(isEditingMenu(e))return;
  const k=e.key.toLowerCase();keys[k]=false;
  if(k==='j')finishCharge('pass','keyboard');if(k==='k')finishCharge('shot','keyboard');
+ if(k==='c')finishCharge('superShot','keyboard');
+ if(k==='f'){if(charge.type==='lob'||charge.type==='lobShot')finishCharge(charge.type,'keyboard');}
 });
 window.addEventListener('blur',()=>{keys={};cancelCharge();resetTouchInput()});
 stage.addEventListener('contextmenu',e=>e.preventDefault());
