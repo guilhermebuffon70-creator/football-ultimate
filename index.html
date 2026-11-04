@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Football Ultimate 3D — v1.9.7</title>
+<title>Football Ultimate 3D — v1.9.8</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#09141c;color:#eef5f8;font:15px system-ui,Arial;overflow-x:hidden}
 header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:#122431;border-bottom:1px solid #294451}
@@ -108,7 +108,7 @@ kbd{background:#263d49;border:1px solid #526c79;border-radius:4px;padding:1px 5p
 </style>
 </head>
 <body>
-<header><h1>⚽ FOOTBALL ULTIMATE <span class="muted">3D • v1.9.7</span></h1><span class="muted">Protótipo de gameplay</span></header>
+<header><h1>⚽ FOOTBALL ULTIMATE <span class="muted">3D • v1.9.8</span></h1><span class="muted">Protótipo de gameplay</span></header>
 <main>
 <div id="stage"><canvas id="game"></canvas>
  <div class="hud"><span id="score">AZUL FC 0 — 0 VERMELHO FC</span><small id="clock">00:00 • 1º TEMPO • 3 min/tempo</small></div>
@@ -138,7 +138,7 @@ kbd{background:#263d49;border:1px solid #526c79;border-radius:4px;padding:1px 5p
  <div id="restartHUD" hidden></div><div id="keeperRushHUD" hidden>🧤 GOLEIRO AVANÇANDO!</div><canvas id="radar" width="246" height="158" aria-label="Minimapa do campo"></canvas>
  <div id="staminaHUD" role="group" aria-label="Estamina do jogador" hidden><div id="staminaTop"><span id="staminaPlayer">JOGADOR 10</span><span id="staminaValue">100%</span></div><div id="staminaTrack" role="progressbar" aria-label="Energia" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div id="staminaFill"></div></div><small>+1% a cada 2s · Drible −20% · Superchute −50%</small></div>
  <div id="touchControls" aria-label="Comandos para celular">
-  <div id="touchJoystick" class="touchJoystick" aria-label="Joystick para mover o jogador"><div id="touchThumb"></div></div>
+  <div id="touchJoystick" class="touchJoystick" aria-label="Joystick para mover e mirar passes e chutes"><div id="touchThumb"></div></div>
   <div class="touchActions">
    <button type="button" id="touchKeeper">🧤<br>Goleiro</button>
    <button type="button" id="touchSwitch">🔄<br>Trocar</button>
@@ -151,7 +151,7 @@ kbd{background:#263d49;border:1px solid #526c79;border-radius:4px;padding:1px 5p
    <button type="button" id="touchSuper">💥<br>Super</button>
   </div>
  </div>
- <div id="powerHUD"><div class="powerTop"><span id="chargeType">PASSE</span><span id="chargePercent">0%</span></div><div id="powerTrack"><div id="powerFill"></div></div><small>Solte para executar • mira pelo cursor do mouse</small></div>
+ <div id="powerHUD"><div class="powerTop"><span id="chargeType">PASSE</span><span id="chargePercent">0%</span></div><div id="powerTrack"><div id="powerFill"></div></div><small>Solte para executar • PC: mouse · Celular: joystick com assistência</small></div>
  <div class="tip"><b>WASD/setas</b> mover · <b>Q</b> trocar · <b>T (alternar)</b> sair/voltar com goleiro · <b>Shift</b> correr · <b>direito</b> passe · <b>esquerdo</b> chute · <b>mouse</b> mirar · <b>F</b> passe alto · <b>Shift+F</b> chute alto · <b>C</b> superchute −50% · <b>E</b> desarme · <b>Espaço</b> drible</div>
  <div id="menuOverlay" role="dialog" aria-label="Configurar partida" aria-modal="true">
   <section class="menuCard">
@@ -170,7 +170,7 @@ kbd{background:#263d49;border:1px solid #526c79;border-radius:4px;padding:1px 5p
     </label>
     <label class="menuField" style="grid-column:1/-1">Modo de controle
       <select id="gameInputMode" aria-label="Escolher controles"><option value="desktop" selected>💻 Computador — teclado e mouse</option><option value="mobile">📱 Celular — joystick e botões na tela</option></select>
-      <small style="font-weight:500;color:#9df0ce">No celular, mova o joystick e toque no campo para mirar.</small>
+      <small style="font-weight:500;color:#9df0ce">No celular, use o joystick para mover e mirar. Passes e chutes têm assistência automática.</small>
     </label>
     <label class="menuField">Cor da camisa do seu time
       <span class="kitPicker"><input id="colorHome" type="color" value="#165bd8" aria-label="Escolher cor do seu time" /><span id="swatchHome" class="kitSwatch" style="background:#165bd8"></span><span class="kitCaption">Uniforme principal</span></span>
@@ -187,11 +187,11 @@ kbd{background:#263d49;border:1px solid #526c79;border-radius:4px;padding:1px 5p
 <div class="panel controls">
  <button id="play">Configurações / reiniciar</button><button class="alt" id="pause">Pausar</button>
  <button class="alt" id="switch">Trocar jogador (Q)</button><button class="alt" id="dribble">Driblar (Espaço)</button>
- <span class="muted" id="status">v1.9.7 · Superchute (C) gasta 50% de estamina</span>
+ <span class="muted" id="status">v1.9.8 · Superchute (C) gasta 50% de estamina</span>
 </div>
 <div class="grid">
  <div class="panel"><b>Controles de campo</b><p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> movimentar · <kbd>Shift</kbd> sprint · <kbd>Espaço</kbd> driblar</p><p><b>Botão direito</b> segure para carregar passe, solte para executar · <b>Botão esquerdo</b> segure para carregar chute, solte para executar · <b>Mouse</b> mire na direção desejada · <kbd>E</kbd> desarmar · <kbd>Q</kbd> selecionar defensor mais próximo do adversário · <kbd>T</kbd> pressione uma vez para o goleiro avançar e novamente para cancelar; também cancela quando seu time recupera a bola · <kbd>F</kbd> passe alto · <kbd>Shift</kbd> + <kbd>F</kbd> chute alto · <kbd>C</kbd> superchute (custa 50% da estamina; segure para potência) · <kbd>J</kbd> e <kbd>K</kbd> também podem ser segurados para carregar passe e chute.</p></div>
- <div class="panel"><b>Novidades da v1.9.7</b><p>• <b>Superchute (C)</b>: segure para carregar e solte para disparar uma finalização muito forte. Gasta <b>50% de estamina</b> por tentativa executada; é necessário ter 50% para chutar. No celular, há um botão dedicado.</p><p>• <b>Tecla Q inteligente</b>: escolhe o jogador mais próximo do adversário com a bola (ou da bola solta).</p><p>• <b>Pênalti corrigido</b>: bola parada na marca oficial do campo, cobrador atrás da bola e chute saindo do ponto correto.</p><p>• <b>F</b> para passe alto e <b>Shift + F</b> para chute alto; segure para controlar a potência.</p><p>• <b>Goleiros aprimorados</b>: saídas mais precisas, saltos para bolas perigosas, antecipação de chutes, interceptação de cruzamentos e passes para companheiros mais livres.</p><p>• <b>Escalações 4-3-3, 4-4-2 e 3-5-2</b> no menu inicial, com possibilidade de mudar no intervalo.</p><p>• <b>Substituições somente no intervalo</b>: 30 segundos, até 5 trocas, reservas descansados e botão ESTOU PRONTO.</p><p>• Faltas, cobranças com mira, pênaltis, cartões amarelos e vermelhos, expulsões e lei da vantagem.</p><p>• Árbitro com apito e câmera especial para infrações; dois amarelos geram expulsão.</p><p>• Quatro níveis de gráficos: Baixo, Médio, Alto e Ultra. Ultra acrescenta textura detalhada, torcida e acabamentos nos jogadores.</p><p>• Estamina visível por jogador: regenera 1% em 2s e cada drible consome 20%. Modo celular com joystick e botões de passe, chute, drible, desarme e corrida.</p><p>• Mantidos replays em câmera lenta, comemorações, rede animada, contagem e controles existentes.</p></div>
+ <div class="panel"><b>Novidades da v1.9.8</b><p>• <b>Mira no celular</b>: o joystick define a direção do passe ou chute. A assistência ajuda a encontrar companheiros e finalizar perto do gol, preservando a última direção escolhida.<br>• <b>Superchute (C)</b>: segure para carregar e solte para disparar uma finalização muito forte. Gasta <b>50% de estamina</b> por tentativa executada; é necessário ter 50% para chutar. No celular, há um botão dedicado.</p><p>• <b>Tecla Q inteligente</b>: escolhe o jogador mais próximo do adversário com a bola (ou da bola solta).</p><p>• <b>Pênalti corrigido</b>: bola parada na marca oficial do campo, cobrador atrás da bola e chute saindo do ponto correto.</p><p>• <b>F</b> para passe alto e <b>Shift + F</b> para chute alto; segure para controlar a potência.</p><p>• <b>Goleiros aprimorados</b>: saídas mais precisas, saltos para bolas perigosas, antecipação de chutes, interceptação de cruzamentos e passes para companheiros mais livres.</p><p>• <b>Escalações 4-3-3, 4-4-2 e 3-5-2</b> no menu inicial, com possibilidade de mudar no intervalo.</p><p>• <b>Substituições somente no intervalo</b>: 30 segundos, até 5 trocas, reservas descansados e botão ESTOU PRONTO.</p><p>• Faltas, cobranças com mira, pênaltis, cartões amarelos e vermelhos, expulsões e lei da vantagem.</p><p>• Árbitro com apito e câmera especial para infrações; dois amarelos geram expulsão.</p><p>• Quatro níveis de gráficos: Baixo, Médio, Alto e Ultra. Ultra acrescenta textura detalhada, torcida e acabamentos nos jogadores.</p><p>• Estamina visível por jogador: regenera 1% em 2s e cada drible consome 20%. Modo celular com mira pelo joystick, assistência para passes e chutes e botões na tela.</p><p>• Mantidos replays em câmera lenta, comemorações, rede animada, contagem e controles existentes.</p></div>
 </div>
 </main>
 <div id="bootStatus" style="position:fixed;z-index:100;bottom:16px;left:16px;right:16px;max-width:700px;margin:auto;background:#102f3b;color:white;border:1px solid #65dcb7;border-radius:12px;padding:13px 16px;font:14px system-ui;box-shadow:0 5px 25px #0008">Carregando motor 3D... Aguarde alguns segundos.</div>
@@ -595,6 +595,9 @@ function setFormation(){
 setFormation();
 let selected=home[0],owner=null,game=false,paused=false,clock=0,score=[0,0],keys={},last=performance.now(),messageTimer=0,animationClock=0;
 let mobileMode=false,touchSprint=false;const joystickAxis={x:0,z:0};
+// A direção da mira no celular é guardada ao soltar o joystick para permitir
+// mover, parar e só então apertar o botão de passe/chute com o outro dedo.
+const mobileAim={x:1,z:0,valid:false};
 let kickoffCountdown=null,goalSequence=null,shotReplay=null,disciplineSequence=null,advantagePlay=null;
 const advantageHUD=document.querySelector('#advantageHUD'),disciplineHUD=document.querySelector('#disciplineHUD');
 const disciplineTitle=document.querySelector('#disciplineTitle'),disciplineSubtitle=document.querySelector('#disciplineSubtitle');
@@ -1802,7 +1805,52 @@ function rememberPointer(e){
  pointer.y=clamp((e.clientY-rect.top)/rect.height,0,1);
  pointer.valid=true;
 }
-function getAimTarget(athlete){
+// O modo PC continua usando o mouse; o celular usa o joystick como mira.
+// Assistência suave: aproxima passes dos colegas na direção pretendida e
+// ajuda a acertar a boca do gol quando o jogador já aponta nessa direção.
+function getMobileAimTarget(athlete,action='pass'){
+ const q=pos(athlete),forward=athlete.team===0?1:-1;
+ const mag=Math.hypot(mobileAim.x,mobileAim.z);
+ const ux=mobileAim.valid&&mag>.01?mobileAim.x/mag:forward;
+ const uz=mobileAim.valid&&mag>.01?mobileAim.z/mag:0;
+ const raw={x:clamp(q.x+ux*34,-HALF_X,HALF_X),z:clamp(q.z+uz*34,-HALF_Z,HALF_Z)};
+ const shooting=action==='shot'||action==='superShot'||action==='lobShot';
+ if(!shooting){
+  const mates=(athlete.team===0?home:away).filter(p=>p!==athlete&&!p.sentOff);
+  const opponents=(athlete.team===0?away:home).filter(p=>!p.sentOff);
+  let best=null,bestScore=-Infinity;
+  for(const mate of mates){
+   const m=pos(mate),dx=m.x-q.x,dz=m.z-q.z,dist=Math.hypot(dx,dz);
+   if(dist<3||dist>42)continue;
+   const similarity=(dx*ux+dz*uz)/dist;
+   if(similarity<.77)continue; // não vira o passe para alguém atrás da mira
+   const clearance=opponents.length?Math.min(...opponents.map(p=>d2(pos(p),m))):9;
+   const score=similarity*100-Math.abs(dist-20)*.18+Math.min(clearance,8)*.22;
+   if(score>bestScore){bestScore=score;best=mate}
+  }
+  if(best){
+   const m=pos(best);
+   return {x:clamp(m.x+(best.vx||0)*.1,-HALF_X,HALF_X),z:clamp(m.z+(best.vz||0)*.1,-HALF_Z,HALF_Z)};
+  }
+  return raw;
+ }
+ // Para chutes não ignoramos a mira: assistência só se a direção já
+ // apontar perto do gol, e não em cruzamentos ou chutes para trás.
+ const goalX=forward*HALF_X,dx=goalX-q.x;
+ const distanceToGoal=Math.abs(dx);
+ const toGoalNorm=Math.hypot(dx,-q.z)||1;
+ const goalAlignment=(ux*dx+uz*(-q.z))/toGoalNorm;
+ if(distanceToGoal<48&&ux*forward>.32&&goalAlignment>.70){
+  const rawGoalZ=q.z+uz*distanceToGoal/Math.max(.32,ux*forward);
+  if(Math.abs(rawGoalZ)<GOAL_WIDTH*2.1){
+   const insideZ=clamp(rawGoalZ,-GOAL_WIDTH*.79,GOAL_WIDTH*.79);
+   return {x:goalX,z:rawGoalZ*.19+insideZ*.81};
+  }
+ }
+ return raw;
+}
+function getAimTarget(athlete,action='pass'){
+ if(mobileMode)return getMobileAimTarget(athlete,action);
  const q=pos(athlete);
  if(!pointer.valid)return {x:clamp(q.x+(athlete.team===0?20:-20),-HALF_X,HALF_X),z:q.z};
  aimRaycaster.setFromCamera({x:pointer.x*2-1,y:1-pointer.y*2},camera);
@@ -1816,9 +1864,9 @@ function getAimTarget(athlete){
 function updateAimGraphics(){
  const show=game&&!paused&&!kickoffCountdown&&!goalSequence&&!disciplineSequence&&owner&&owner.team===0;
  aimRing.visible=!!show;
- aimLine.visible=!!show&&charge.actor===owner&&!!charge.type;
+ aimLine.visible=!!show&&(mobileMode?mobileAim.valid:charge.actor===owner&&!!charge.type);
  if(!show)return;
- const target=getAimTarget(owner),q=pos(owner);
+ const target=getAimTarget(owner,charge.type||'pass'),q=pos(owner);
  aimRing.position.set(target.x,.095,target.z);
  const color=charge.type==='shot'&&charge.actor===owner?0xffc265:0x82ffe5;
  aimRing.material.color.setHex(color);aimLine.material.color.setHex(color);
@@ -1857,14 +1905,14 @@ function finishCharge(type,source){
  if(!game||paused||!athlete||owner!==athlete||athlete.team!==0)return;
  // Verifica novamente: o jogador pode ter gasto estamina correndo enquanto carregava.
  if(type==='superShot'&&athlete.stamina<50)return;
- const target=getAimTarget(athlete);
+ const target=getAimTarget(athlete,type);
  // Passe de 11 a 27 unidades/s; chute de 22 a 46 unidades/s.
  // Os dois chegam a 100% em seus tempos de carga, sem ultrapassar o limite.
  const superShot=type==='superShot';
  const isShot=superShot||type==='shot'||type==='lobShot',isLob=type==='lob'||type==='lobShot';
  const power=superShot?(53+ratio*17)*0.80:type==='lobShot'?23+ratio*15:type==='lob'?13+ratio*16:isShot?22+ratio*24:11+ratio*16;
  if(superShot){
-  // Debita uma única vez no lançamento, não no início da carga. Força reduzida em 20% na v1.9.7.
+  // Debita uma única vez no lançamento, não no início da carga. Força reduzida em 20% na v1.9.8.
   athlete.stamina=Math.max(0,athlete.stamina-50);
   kick(athlete,target.x,target.z,power,true);
   // Finalização rápida e tensa; rotação inicial mais intensa.
@@ -1900,6 +1948,7 @@ function resetTouchInput(){
 function syncMobileMode(){
  stage.classList.toggle('touchMode',mobileMode);
  resetTouchInput();pointer.valid=false;
+ mobileAim.x=1;mobileAim.z=0;mobileAim.valid=false;
 }
 function setJoystickPoint(e){
  const rect=touchJoystick.getBoundingClientRect(),cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
@@ -1907,6 +1956,11 @@ function setJoystickPoint(e){
  const factor=Math.min(1,maxDist/dist),ox=dx*factor,oy=dy*factor;
  joystickAxis.x=ox/maxDist;joystickAxis.z=oy/maxDist;
  if(Math.hypot(joystickAxis.x,joystickAxis.z)<.14){joystickAxis.x=0;joystickAxis.z=0}
+ else{
+  const len=Math.hypot(joystickAxis.x,joystickAxis.z);
+  mobileAim.x=joystickAxis.x/len;mobileAim.z=joystickAxis.z/len;
+  mobileAim.valid=true;
+ }
  touchThumb.style.transform=`translate(${ox.toFixed(1)}px,${oy.toFixed(1)}px)`;
 }
 touchJoystick.addEventListener('pointerdown',e=>{
@@ -1949,11 +2003,9 @@ bindTouchButton('touchDribble',()=>dribble());
 bindTouchButton('touchTackle',()=>tackle());
 bindTouchButton('touchSwitch',()=>switchPlayer());
 bindTouchButton('touchKeeper',()=>toggleGoalkeeperRush());
-// Touch no campo apenas marca a mira, nunca dispara chute acidental.
+// No celular, a mira é feita exclusivamente pelo joystick, não pelo toque no campo.
 canvas.addEventListener('pointerdown',e=>{
- if(mobileMode){
-  e.preventDefault();e.stopPropagation();rememberPointer(e);
- }
+ if(mobileMode){e.preventDefault();e.stopPropagation()}
 });
 document.addEventListener('keydown',e=>{
  // A barra de espaço e as setas NÃO são atalhos enquanto o usuário
@@ -1976,7 +2028,7 @@ document.addEventListener('keyup',e=>{
 });
 window.addEventListener('blur',()=>{keys={};cancelCharge();resetTouchInput()});
 stage.addEventListener('contextmenu',e=>e.preventDefault());
-canvas.addEventListener('pointermove',rememberPointer);
+canvas.addEventListener('pointermove',e=>{if(!mobileMode)rememberPointer(e)});
 stage.addEventListener('pointerdown',e=>{
  if(!game||paused||kickoffCountdown||goalSequence||disciplineSequence)return;
  if(e.button!==2&&e.button!==0)return;
