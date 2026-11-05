@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Football Ultimate 3D — v1.9.8</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Football Ultimate 3D — v1.9.9</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#09141c;color:#eef5f8;font:15px system-ui,Arial;overflow-x:hidden}
 header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:#122431;border-bottom:1px solid #294451}
@@ -67,24 +67,45 @@ kbd{background:#263d49;border:1px solid #526c79;border-radius:4px;padding:1px 5p
 #staminaTrack{height:11px;border-radius:8px;overflow:hidden;background:#293947;box-shadow:inset 0 1px 4px #000a}
 #staminaFill{width:100%;height:100%;background:linear-gradient(90deg,#2fba7b,#78f3a7);transition:width .12s linear,background .2s}
 #staminaHUD small{font-size:10px;color:#bed7dc;display:block;margin-top:5px}
-/* Controle de toque: joystick à esquerda, comandos à direita. */
+/* Modo celular inspirado no layout funcional do FC Mobile: joystick à esquerda,
+   quatro botões circulares à direita, que mudam quando a posse muda. */
 #touchControls{display:none;position:absolute;inset:0;z-index:6;pointer-events:none;touch-action:none;user-select:none;-webkit-user-select:none}
 #stage.touchMode #touchControls{display:block}
 #stage.touchMode #game{touch-action:none}
 #stage.touchMode .tip{display:none}
-#stage.touchMode #radar{top:73px;right:9px;bottom:auto;width:135px;height:89px;opacity:.78}
-#stage.touchMode #staminaHUD{top:78px;left:10px;right:auto;bottom:auto;width:174px;padding:7px 9px}
-#stage.touchMode #powerHUD{top:162px;bottom:auto;left:10px;max-width:220px;width:220px}
-.touchJoystick{position:absolute;left:17px;bottom:23px;width:125px;height:125px;border:2px solid #bbffff90;border-radius:50%;background:#092b3b9c;pointer-events:auto;touch-action:none;box-shadow:0 2px 20px #0009,inset 0 0 24px #6ae3c023}
-.touchJoystick::after{content:"MOVER";position:absolute;left:0;right:0;top:-19px;text-align:center;color:#def9f4;font-size:11px;font-weight:850;text-shadow:0 2px 4px #000}
-#touchThumb{position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#b5ffe9,#36bf9d);border:2px solid #eefffeaa;box-shadow:0 4px 10px #0009;transform:translate(0px,0px);pointer-events:none}
-.touchActions{position:absolute;right:11px;bottom:17px;display:grid;grid-template-columns:repeat(3,58px);grid-auto-rows:52px;gap:7px;pointer-events:auto;touch-action:none}
-.touchActions button{padding:2px 4px;border-radius:13px;background:#0d3856e0;border:1px solid #bdefff9a;box-shadow:0 4px 12px #0009;color:#fff;font-size:11px;font-weight:900;line-height:1.15;touch-action:none;user-select:none;-webkit-user-select:none;min-width:0;min-height:0}
-.touchActions button:active,.touchActions button.pressed{background:#16846d;transform:scale(.94)}
-#touchShot{background:#d15c21e8;border-color:#ffcd7c}#touchSuper{background:#9e2369ec;border-color:#ffc0e4}#touchSuper.lowEnergy{opacity:.45;filter:grayscale(.6)}#touchPass{background:#108f67ea}#touchRun{background:#254b9be8}#touchKeeper{background:#314758ea;font-size:10px}
-@media(max-width:700px){#stage:not(.touchMode) #staminaHUD{left:9px;right:auto;top:80px;bottom:auto;width:178px}}
-@media(max-width:460px){.touchJoystick{left:8px;bottom:15px;width:108px;height:108px}.touchActions{right:6px;bottom:10px;grid-template-columns:repeat(3,52px);grid-auto-rows:48px;gap:5px}.touchActions button{font-size:10px}#stage.touchMode #staminaHUD{width:152px}#stage.touchMode #radar{width:115px;height:75px}#stage.touchMode #powerHUD{top:154px}}
+#stage.touchMode #radar{top:74px;right:8px;bottom:auto;width:137px;height:90px;opacity:.77}
+#stage.touchMode #staminaHUD{top:73px;left:9px;right:auto;bottom:auto;width:165px;padding:7px 9px}
+#stage.touchMode #powerHUD{left:50%;transform:translateX(-50%);top:auto;bottom:15px;max-width:250px;width:24%;min-width:145px;z-index:8}
+.touchJoystick{position:absolute;left:18px;bottom:22px;width:136px;height:136px;border:2px solid #bed5db92;border-radius:50%;background:#071e2a80;pointer-events:auto;touch-action:none;box-shadow:0 3px 19px #0009,inset 0 0 25px #e0f4ed0b}
+.touchJoystick::after{content:"MOVER / MIRAR";position:absolute;left:0;right:0;top:-22px;text-align:center;color:#def9f4;font-size:10px;font-weight:850;text-shadow:0 2px 5px #000}
+#touchThumb{position:absolute;left:50%;top:50%;width:57px;height:57px;margin:-28.5px 0 0 -28.5px;border-radius:50%;background:radial-gradient(circle at 33% 28%,#fff,#b0c1cb 64%,#597784);border:2px solid #edf9ff;box-shadow:0 4px 13px #0009;transform:translate(0px,0px);pointer-events:none}
+.touchActions{position:absolute;right:12px;bottom:18px;width:265px;height:235px;pointer-events:none;touch-action:none}
+.touchActionSet{position:absolute;inset:0;pointer-events:none}
+.touchActionSet button{position:absolute;width:80px;height:80px;border-radius:50%;padding:7px 4px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;background:#15232bdc;border:3px solid var(--button-accent,#8fb8c0);box-shadow:0 3px 13px #000b,inset 0 0 0 3px #ffffff22;color:#fff;text-shadow:0 1px 3px #000a;font-size:11px;font-weight:900;line-height:1.06;touch-action:none;user-select:none;-webkit-user-select:none;pointer-events:auto;-webkit-tap-highlight-color:transparent}
+.touchActionSet button .glyph{font-size:21px;line-height:1}
+.touchActionSet button.big{width:96px;height:96px;font-size:11px}
+.touchActionSet button:active,.touchActionSet button.pressed{background:#284b54;transform:scale(.94);box-shadow:0 1px 8px #0009,inset 0 0 15px #ffffff24}
+.touchActionSet .slot-pass{bottom:0;left:12px;--button-accent:#52a6f1}
+.touchActionSet .slot-through{bottom:111px;left:45px;--button-accent:#e0c54f}
+.touchActionSet .slot-shot{bottom:119px;right:9px;--button-accent:#ed815b}
+.touchActionSet .slot-run{bottom:0;right:0;--button-accent:#68d576}
+.touchActions.defending .attackSet,.touchActions:not(.defending) .defenseSet{display:none}
+#touchSuper.lowEnergy{opacity:.45;filter:grayscale(.6)}
+.touchExtras{position:absolute;right:18px;bottom:254px;display:flex;gap:8px;pointer-events:auto;touch-action:none}
+.touchExtras button{background:#18313ddc;color:#fff;border:1px solid #adcfd6a3;border-radius:20px;padding:8px 10px;font-size:11px;min-width:62px;min-height:36px;touch-action:none;box-shadow:0 3px 8px #0008}
+.touchExtras button:active,.touchExtras button.pressed{background:#347275}
+#touchSuper{background:#7b2c54d9;border-color:#ffb5d3}
+#touchKeeper{background:#1e4153dc}
+#touchHelp{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:650;color:#effcf0;white-space:nowrap;background:#061a20ba;border:1px solid #8aad9d55;padding:3px 7px;border-radius:10px;pointer-events:none}
+@media(max-width:720px){#stage.touchMode #powerHUD{left:50%;top:148px;bottom:auto;width:150px;min-width:0;transform:translateX(-50%)}.touchJoystick{left:10px;bottom:13px;width:112px;height:112px}.touchActions{right:6px;bottom:8px;transform:scale(.77);transform-origin:right bottom}.touchExtras{right:6px;bottom:195px}.touchExtras button{font-size:10px;padding:6px 8px;min-width:50px}.touchActionSet button{font-size:12px}#touchHelp{display:none}}
+@media(max-width:390px){.touchJoystick{left:6px;bottom:10px;width:94px;height:94px}.touchActions{transform:scale(.66)}.touchExtras{bottom:169px}#stage.touchMode #staminaHUD{width:146px}#stage.touchMode #radar{width:110px;height:73px}}
+@media(max-height:455px) and (orientation:landscape){#stage.touchMode #game{height:calc(100dvh - 10px);min-height:0}.touchActions{transform:scale(.76);transform-origin:right bottom;right:6px;bottom:4px}.touchJoystick{width:99px;height:99px;left:10px;bottom:8px}.touchExtras{bottom:191px;right:6px}#touchHelp{display:none}#stage.touchMode #staminaHUD{top:45px;left:6px}#stage.touchMode #radar{top:45px;right:6px}#stage.touchMode #powerHUD{left:50%;top:65px;bottom:auto}}
 
+/* Modo celular em tela inteira, evitando cortes dos botões em paisagem. */
+#stage.touchMode{position:fixed;inset:0;width:100vw;height:100dvh;z-index:30;border:0;border-radius:0;box-shadow:none}
+#stage.touchMode #game{width:100%;height:100dvh;min-height:0}
+body:has(#stage.touchMode){overflow:hidden}
+@supports not (height:100dvh){#stage.touchMode,#stage.touchMode #game{height:100vh}}
 /* Escalações e substituições: liberadas exclusivamente no intervalo. */
 #matchBanner.halftime{padding:9px 12px}
 #matchBanner.halftime .breakCard{width:min(680px,98%);max-height:100%;overflow-y:auto;padding:16px 20px;text-align:left}
@@ -108,7 +129,7 @@ kbd{background:#263d49;border:1px solid #526c79;border-radius:4px;padding:1px 5p
 </style>
 </head>
 <body>
-<header><h1>⚽ FOOTBALL ULTIMATE <span class="muted">3D • v1.9.8</span></h1><span class="muted">Protótipo de gameplay</span></header>
+<header><h1>⚽ FOOTBALL ULTIMATE <span class="muted">3D • v1.9.9</span></h1><span class="muted">Protótipo de gameplay</span></header>
 <main>
 <div id="stage"><canvas id="game"></canvas>
  <div class="hud"><span id="score">AZUL FC 0 — 0 VERMELHO FC</span><small id="clock">00:00 • 1º TEMPO • 3 min/tempo</small></div>
@@ -137,19 +158,24 @@ kbd{background:#263d49;border:1px solid #526c79;border-radius:4px;padding:1px 5p
  <button id="replaySkip" hidden>Pular replay (R) ❯❯</button>
  <div id="restartHUD" hidden></div><div id="keeperRushHUD" hidden>🧤 GOLEIRO AVANÇANDO!</div><canvas id="radar" width="246" height="158" aria-label="Minimapa do campo"></canvas>
  <div id="staminaHUD" role="group" aria-label="Estamina do jogador" hidden><div id="staminaTop"><span id="staminaPlayer">JOGADOR 10</span><span id="staminaValue">100%</span></div><div id="staminaTrack" role="progressbar" aria-label="Energia" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div id="staminaFill"></div></div><small>+1% a cada 2s · Drible −20% · Superchute −50%</small></div>
- <div id="touchControls" aria-label="Comandos para celular">
+ <div id="touchControls" aria-label="Controles de toque com botões contextuais">
   <div id="touchJoystick" class="touchJoystick" aria-label="Joystick para mover e mirar passes e chutes"><div id="touchThumb"></div></div>
-  <div class="touchActions">
-   <button type="button" id="touchKeeper">🧤<br>Goleiro</button>
-   <button type="button" id="touchSwitch">🔄<br>Trocar</button>
-   <button type="button" id="touchDribble">⚡<br>Drible</button>
-   <button type="button" id="touchTackle">🛡️<br>Desarme</button>
-   <button type="button" id="touchPass">↗️<br>Passe</button>
-   <button type="button" id="touchShot">⚽<br>Chute</button>
-   <button type="button" id="touchRun">🏃<br>Correr</button>
-   <button type="button" id="touchLob">🌈<br>Alto</button>
-   <button type="button" id="touchSuper">💥<br>Super</button>
+  <div class="touchActions" id="touchActions">
+   <div class="touchActionSet attackSet" aria-label="Comandos de ataque">
+    <button type="button" id="touchPass" class="slot-pass" aria-label="Passe; arraste para cima para passe alto"><span class="glyph">↗</span>PASSE</button>
+    <button type="button" id="touchThrough" class="slot-through" aria-label="Passe em profundidade; arraste para cima para lançamento alto"><span class="glyph">➜</span>PROFUN-<br>DIDADE</button>
+    <button type="button" id="touchShot" class="slot-shot" aria-label="Chute; arraste para cima para cavadinha, direita para Superchute e baixo para colocado"><span class="glyph">⚽</span>CHUTE</button>
+    <button type="button" id="touchSprintSkill" class="slot-run big" aria-label="Segure para correr, toque para driblar"><span class="glyph">⚡</span>CORRER<br>& DRIBLE</button>
+   </div>
+   <div class="touchActionSet defenseSet" aria-label="Comandos de defesa">
+    <button type="button" id="touchSwitch" class="slot-pass" aria-label="Trocar jogador"><span class="glyph">↻</span>TROCAR</button>
+    <button type="button" id="touchSecondDef" class="slot-through" aria-label="Segure para chamar o segundo defensor"><span class="glyph">👥</span>2º DEF</button>
+    <button type="button" id="touchSlide" class="slot-shot" aria-label="Carrinho"><span class="glyph">↘</span>CARRINHO</button>
+    <button type="button" id="touchSprintTackle" class="slot-run big" aria-label="Segure para correr e pressionar, toque para desarmar"><span class="glyph">🛡</span>CORRER<br>& DESARME</button>
+   </div>
   </div>
+  <div class="touchExtras"><button type="button" id="touchSuper" aria-label="Superchute: requer e gasta 50% de estamina">💥 Super</button><button type="button" id="touchKeeper" aria-label="Goleiro avançar e retornar">🧤 Goleiro</button></div>
+  <div id="touchHelp">Joystick mira · deslize ↑ Passe/Profundidade: alto · ↑ Chute: cavadinha · → Chute: Super</div>
  </div>
  <div id="powerHUD"><div class="powerTop"><span id="chargeType">PASSE</span><span id="chargePercent">0%</span></div><div id="powerTrack"><div id="powerFill"></div></div><small>Solte para executar • PC: mouse · Celular: joystick com assistência</small></div>
  <div class="tip"><b>WASD/setas</b> mover · <b>Q</b> trocar · <b>T (alternar)</b> sair/voltar com goleiro · <b>Shift</b> correr · <b>direito</b> passe · <b>esquerdo</b> chute · <b>mouse</b> mirar · <b>F</b> passe alto · <b>Shift+F</b> chute alto · <b>C</b> superchute −50% · <b>E</b> desarme · <b>Espaço</b> drible</div>
@@ -170,7 +196,7 @@ kbd{background:#263d49;border:1px solid #526c79;border-radius:4px;padding:1px 5p
     </label>
     <label class="menuField" style="grid-column:1/-1">Modo de controle
       <select id="gameInputMode" aria-label="Escolher controles"><option value="desktop" selected>💻 Computador — teclado e mouse</option><option value="mobile">📱 Celular — joystick e botões na tela</option></select>
-      <small style="font-weight:500;color:#9df0ce">No celular, use o joystick para mover e mirar. Passes e chutes têm assistência automática.</small>
+      <small style="font-weight:500;color:#9df0ce">No celular: controles contextuais inspirados no FC Mobile. Joystick à esquerda, Passe/Profundidade/Chute/Correr & Drible no ataque e comandos defensivos ao perder a posse. Arraste os botões para jogadas especiais. Para maior conforto, use o celular na horizontal.</small>
     </label>
     <label class="menuField">Cor da camisa do seu time
       <span class="kitPicker"><input id="colorHome" type="color" value="#165bd8" aria-label="Escolher cor do seu time" /><span id="swatchHome" class="kitSwatch" style="background:#165bd8"></span><span class="kitCaption">Uniforme principal</span></span>
@@ -187,11 +213,11 @@ kbd{background:#263d49;border:1px solid #526c79;border-radius:4px;padding:1px 5p
 <div class="panel controls">
  <button id="play">Configurações / reiniciar</button><button class="alt" id="pause">Pausar</button>
  <button class="alt" id="switch">Trocar jogador (Q)</button><button class="alt" id="dribble">Driblar (Espaço)</button>
- <span class="muted" id="status">v1.9.8 · Superchute (C) gasta 50% de estamina</span>
+ <span class="muted" id="status">v1.9.9 · Superchute (C) gasta 50% de estamina</span>
 </div>
 <div class="grid">
  <div class="panel"><b>Controles de campo</b><p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> movimentar · <kbd>Shift</kbd> sprint · <kbd>Espaço</kbd> driblar</p><p><b>Botão direito</b> segure para carregar passe, solte para executar · <b>Botão esquerdo</b> segure para carregar chute, solte para executar · <b>Mouse</b> mire na direção desejada · <kbd>E</kbd> desarmar · <kbd>Q</kbd> selecionar defensor mais próximo do adversário · <kbd>T</kbd> pressione uma vez para o goleiro avançar e novamente para cancelar; também cancela quando seu time recupera a bola · <kbd>F</kbd> passe alto · <kbd>Shift</kbd> + <kbd>F</kbd> chute alto · <kbd>C</kbd> superchute (custa 50% da estamina; segure para potência) · <kbd>J</kbd> e <kbd>K</kbd> também podem ser segurados para carregar passe e chute.</p></div>
- <div class="panel"><b>Novidades da v1.9.8</b><p>• <b>Mira no celular</b>: o joystick define a direção do passe ou chute. A assistência ajuda a encontrar companheiros e finalizar perto do gol, preservando a última direção escolhida.<br>• <b>Superchute (C)</b>: segure para carregar e solte para disparar uma finalização muito forte. Gasta <b>50% de estamina</b> por tentativa executada; é necessário ter 50% para chutar. No celular, há um botão dedicado.</p><p>• <b>Tecla Q inteligente</b>: escolhe o jogador mais próximo do adversário com a bola (ou da bola solta).</p><p>• <b>Pênalti corrigido</b>: bola parada na marca oficial do campo, cobrador atrás da bola e chute saindo do ponto correto.</p><p>• <b>F</b> para passe alto e <b>Shift + F</b> para chute alto; segure para controlar a potência.</p><p>• <b>Goleiros aprimorados</b>: saídas mais precisas, saltos para bolas perigosas, antecipação de chutes, interceptação de cruzamentos e passes para companheiros mais livres.</p><p>• <b>Escalações 4-3-3, 4-4-2 e 3-5-2</b> no menu inicial, com possibilidade de mudar no intervalo.</p><p>• <b>Substituições somente no intervalo</b>: 30 segundos, até 5 trocas, reservas descansados e botão ESTOU PRONTO.</p><p>• Faltas, cobranças com mira, pênaltis, cartões amarelos e vermelhos, expulsões e lei da vantagem.</p><p>• Árbitro com apito e câmera especial para infrações; dois amarelos geram expulsão.</p><p>• Quatro níveis de gráficos: Baixo, Médio, Alto e Ultra. Ultra acrescenta textura detalhada, torcida e acabamentos nos jogadores.</p><p>• Estamina visível por jogador: regenera 1% em 2s e cada drible consome 20%. Modo celular com mira pelo joystick, assistência para passes e chutes e botões na tela.</p><p>• Mantidos replays em câmera lenta, comemorações, rede animada, contagem e controles existentes.</p></div>
+ <div class="panel"><b>Novidades da v1.9.9</b><p>• <b>Controles no celular</b>: botões contextuais inspirados no FC Mobile; o joystick define a direção do passe ou chute. A assistência ajuda a encontrar companheiros e finalizar perto do gol, preservando a última direção escolhida.<br>• <b>Superchute (C)</b>: segure para carregar e solte para disparar uma finalização muito forte. Gasta <b>50% de estamina</b> por tentativa executada; é necessário ter 50% para chutar. No celular, há um botão dedicado e um gesto de deslizar o botão de chute para a direita.</p><p>• <b>Tecla Q inteligente</b>: escolhe o jogador mais próximo do adversário com a bola (ou da bola solta).</p><p>• <b>Pênalti corrigido</b>: bola parada na marca oficial do campo, cobrador atrás da bola e chute saindo do ponto correto.</p><p>• <b>F</b> para passe alto e <b>Shift + F</b> para chute alto; segure para controlar a potência.</p><p>• <b>Goleiros aprimorados</b>: saídas mais precisas, saltos para bolas perigosas, antecipação de chutes, interceptação de cruzamentos e passes para companheiros mais livres.</p><p>• <b>Escalações 4-3-3, 4-4-2 e 3-5-2</b> no menu inicial, com possibilidade de mudar no intervalo.</p><p>• <b>Substituições somente no intervalo</b>: 30 segundos, até 5 trocas, reservas descansados e botão ESTOU PRONTO.</p><p>• Faltas, cobranças com mira, pênaltis, cartões amarelos e vermelhos, expulsões e lei da vantagem.</p><p>• Árbitro com apito e câmera especial para infrações; dois amarelos geram expulsão.</p><p>• Quatro níveis de gráficos: Baixo, Médio, Alto e Ultra. Ultra acrescenta textura detalhada, torcida e acabamentos nos jogadores.</p><p>• Estamina visível por jogador: regenera 1% em 2s e cada drible consome 20%. Modo celular com mira pelo joystick, assistência para passes e chutes e botões na tela.</p><p>• Mantidos replays em câmera lenta, comemorações, rede animada, contagem e controles existentes.</p></div>
 </div>
 </main>
 <div id="bootStatus" style="position:fixed;z-index:100;bottom:16px;left:16px;right:16px;max-width:700px;margin:auto;background:#102f3b;color:white;border:1px solid #65dcb7;border-radius:12px;padding:13px 16px;font:14px system-ui;box-shadow:0 5px 25px #0008">Carregando motor 3D... Aguarde alguns segundos.</div>
@@ -594,7 +620,7 @@ function setFormation(){
 }
 setFormation();
 let selected=home[0],owner=null,game=false,paused=false,clock=0,score=[0,0],keys={},last=performance.now(),messageTimer=0,animationClock=0;
-let mobileMode=false,touchSprint=false;const joystickAxis={x:0,z:0};
+let mobileMode=false,touchSprint=false,touchSecondDef=false,touchPressTackle=false;const joystickAxis={x:0,z:0};
 // A direção da mira no celular é guardada ao soltar o joystick para permitir
 // mover, parar e só então apertar o botão de passe/chute com o outro dedo.
 const mobileAim={x:1,z:0,valid:false};
@@ -942,7 +968,7 @@ function showRestartHUD(t){
 const ballState={x:0,y:.4,z:0,vx:0,vy:0,vz:0,spinY:0,lastX:0,lastY:.4,lastZ:0,releasedBy:null,releaseTimer:0,isShot:false,postCooldown:0};
 // Um comando dura até soltar o botão/tecla; a força satura rapidamente em 100%.
 // Passe chega ao máximo em 0,55 s; chute em 0,80 s. Cada barra tem seu próprio limite.
-const charge={type:null,source:null,actor:null,seconds:0},CHARGE_TIME={pass:.55,shot:.80,lob:.65,lobShot:.80,superShot:1.05};
+const charge={type:null,source:null,actor:null,seconds:0},CHARGE_TIME={pass:.55,shot:.80,lob:.65,lobShot:.80,superShot:1.05,through:.65,lobThrough:.78,finesseShot:.83};
 const powerHUD=document.querySelector('#powerHUD'),chargeType=document.querySelector('#chargeType'),chargePercent=document.querySelector('#chargePercent'),powerFill=document.querySelector('#powerFill');
 const pointer={x:0,y:0,valid:false};
 const aimRaycaster=new THREE.Raycaster(),groundAimPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0),aimWorldPoint=new THREE.Vector3();
@@ -1434,6 +1460,7 @@ function userControl(dt){
  q.z=clamp(q.z+selected.vz*dt,-EDGE_Z,EDGE_Z);
  constrainKeeperCarry(selected);
  if(ax||az)selected.group.rotation.y=Math.atan2(selected.vx,selected.vz);
+ if(mobileMode&&touchPressTackle&&owner&&owner.team===1&&d2(pos(selected),pos(owner))<2.05&&selected.cool<=0)tackle();
  if(owner===selected){
   const dist=selected.dribbleTime>0?1.13:.83;
   ballState.x=q.x+Math.sin(selected.group.rotation.y)*dist;
@@ -1814,7 +1841,8 @@ function getMobileAimTarget(athlete,action='pass'){
  const ux=mobileAim.valid&&mag>.01?mobileAim.x/mag:forward;
  const uz=mobileAim.valid&&mag>.01?mobileAim.z/mag:0;
  const raw={x:clamp(q.x+ux*34,-HALF_X,HALF_X),z:clamp(q.z+uz*34,-HALF_Z,HALF_Z)};
- const shooting=action==='shot'||action==='superShot'||action==='lobShot';
+ const shooting=['shot','superShot','lobShot','finesseShot'].includes(action);
+ const through=action==='through'||action==='lobThrough';
  if(!shooting){
   const mates=(athlete.team===0?home:away).filter(p=>p!==athlete&&!p.sentOff);
   const opponents=(athlete.team===0?away:home).filter(p=>!p.sentOff);
@@ -1830,7 +1858,8 @@ function getMobileAimTarget(athlete,action='pass'){
   }
   if(best){
    const m=pos(best);
-   return {x:clamp(m.x+(best.vx||0)*.1,-HALF_X,HALF_X),z:clamp(m.z+(best.vz||0)*.1,-HALF_Z,HALF_Z)};
+   const lead=through?Math.min(9,4.5+Math.hypot(m.vx||0,m.vz||0)*.12):0;
+   return {x:clamp(m.x+(best.vx||0)*.1+ux*lead,-HALF_X,HALF_X),z:clamp(m.z+(best.vz||0)*.1+uz*lead,-HALF_Z,HALF_Z)};
   }
   return raw;
  }
@@ -1881,9 +1910,9 @@ function updateChargeHUD(){
  powerHUD.classList.toggle('visible',active);
  if(!active)return;
  const percent=Math.round(clamp(charge.seconds/CHARGE_TIME[charge.type],0,1)*100);
- powerHUD.classList.toggle('shot',charge.type==='shot'||charge.type==='lobShot');
+ powerHUD.classList.toggle('shot',['shot','lobShot','finesseShot'].includes(charge.type));
  powerHUD.classList.toggle('super',charge.type==='superShot');
- chargeType.textContent=charge.type==='superShot'?'💥 SUPERCHUTE — −50% ENERGIA':charge.type==='shot'?'CHUTE — FORÇA':charge.type==='lobShot'?'CHUTE ALTO — FORÇA':charge.type==='lob'?'PASSE ALTO — FORÇA':'PASSE — FORÇA';
+ chargeType.textContent=charge.type==='superShot'?'💥 SUPERCHUTE — −50% ENERGIA':charge.type==='finesseShot'?'CHUTE COLOCADO':charge.type==='shot'?'CHUTE — FORÇA':charge.type==='lobShot'?'CAVADINHA / CHUTE ALTO':charge.type==='lobThrough'?'LANÇAMENTO EM PROFUNDIDADE':charge.type==='through'?'EM PROFUNDIDADE':charge.type==='lob'?'PASSE ALTO — FORÇA':'PASSE — FORÇA';
  chargePercent.textContent=percent+'%';powerFill.style.width=percent+'%';
 }
 function cancelCharge(){
@@ -1909,16 +1938,17 @@ function finishCharge(type,source){
  // Passe de 11 a 27 unidades/s; chute de 22 a 46 unidades/s.
  // Os dois chegam a 100% em seus tempos de carga, sem ultrapassar o limite.
  const superShot=type==='superShot';
- const isShot=superShot||type==='shot'||type==='lobShot',isLob=type==='lob'||type==='lobShot';
- const power=superShot?(53+ratio*17)*0.80:type==='lobShot'?23+ratio*15:type==='lob'?13+ratio*16:isShot?22+ratio*24:11+ratio*16;
+ const isShot=superShot||type==='shot'||type==='lobShot'||type==='finesseShot',isLob=['lob','lobShot','lobThrough'].includes(type);
+ const power=superShot?(53+ratio*17)*0.80:type==='lobShot'?23+ratio*15:type==='finesseShot'?18+ratio*19:type==='through'?18+ratio*17:type==='lobThrough'?16+ratio*18:type==='lob'?13+ratio*16:isShot?22+ratio*24:11+ratio*16;
  if(superShot){
-  // Debita uma única vez no lançamento, não no início da carga. Força reduzida em 20% na v1.9.8.
+  // Debita uma única vez no lançamento, não no início da carga. Força reduzida em 20% na v1.9.9.
   athlete.stamina=Math.max(0,athlete.stamina-50);
   kick(athlete,target.x,target.z,power,true);
   // Finalização rápida e tensa; rotação inicial mais intensa.
   ballState.vy=1.65+ratio*2.05;
   ballState.spinY*=1.35;
  }else if(isLob)loftKick(athlete,target.x,target.z,power,isShot);
+ else if(type==='finesseShot'){kick(athlete,target.x,target.z,power,true);ballState.spinY+=(athlete.team===0?1:-1)*3.5;ballState.vy=1.5+ratio*2;}
  else kick(athlete,target.x,target.z,power,isShot);
 }
 function isEditingMenu(e){
@@ -1938,28 +1968,40 @@ function toggleGoalkeeperRush(){
  setMessage(userKeeperRush?'GOLEIRO AVANÇANDO! APERTE T PARA CANCELAR':'GOLEIRO VOLTANDO AO GOL');
 }
 const touchControls=document.querySelector('#touchControls');
+const touchActions=document.querySelector('#touchActions');
 const touchJoystick=document.querySelector('#touchJoystick'),touchThumb=document.querySelector('#touchThumb');
 let activeJoystickId=null;
 function resetTouchInput(){
- joystickAxis.x=0;joystickAxis.z=0;touchSprint=false;activeJoystickId=null;
+ joystickAxis.x=0;joystickAxis.z=0;touchSprint=false;touchSecondDef=false;touchPressTackle=false;activeJoystickId=null;
  touchThumb.style.transform='translate(0px,0px)';
- document.querySelectorAll('.touchActions button').forEach(b=>b.classList.remove('pressed'));
+ document.querySelectorAll('#touchControls button').forEach(b=>b.classList.remove('pressed'));
 }
 function syncMobileMode(){
  stage.classList.toggle('touchMode',mobileMode);
  resetTouchInput();pointer.valid=false;
  mobileAim.x=1;mobileAim.z=0;mobileAim.valid=false;
+ updateTouchControlMode();
+ resize();
+}
+function updateTouchControlMode(){
+ if(!mobileMode)return;
+ const defending=!(owner&&owner.team===0);
+ const wasDefending=touchActions.classList.contains('defending');
+ if(defending!==wasDefending){
+  touchActions.classList.toggle('defending',defending);
+  touchSecondDef=false;touchPressTackle=false;touchSprint=false;
+ }
+ document.querySelector('#touchSuper').style.display=defending?'none':'';
 }
 function setJoystickPoint(e){
  const rect=touchJoystick.getBoundingClientRect(),cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
- const dx=e.clientX-cx,dy=e.clientY-cy,maxDist=rect.width*.34,dist=Math.hypot(dx,dy)||1;
+ const dx=e.clientX-cx,dy=e.clientY-cy,maxDist=rect.width*.33,dist=Math.hypot(dx,dy)||1;
  const factor=Math.min(1,maxDist/dist),ox=dx*factor,oy=dy*factor;
  joystickAxis.x=ox/maxDist;joystickAxis.z=oy/maxDist;
  if(Math.hypot(joystickAxis.x,joystickAxis.z)<.14){joystickAxis.x=0;joystickAxis.z=0}
  else{
   const len=Math.hypot(joystickAxis.x,joystickAxis.z);
-  mobileAim.x=joystickAxis.x/len;mobileAim.z=joystickAxis.z/len;
-  mobileAim.valid=true;
+  mobileAim.x=joystickAxis.x/len;mobileAim.z=joystickAxis.z/len;mobileAim.valid=true;
  }
  touchThumb.style.transform=`translate(${ox.toFixed(1)}px,${oy.toFixed(1)}px)`;
 }
@@ -1984,8 +2026,7 @@ function bindTouchButton(id,action,release){
  el.addEventListener('pointerdown',e=>{
   if(!mobileMode||!game||paused||pointerId!==null)return;
   e.preventDefault();e.stopPropagation();pointerId=e.pointerId;
-  el.setPointerCapture(e.pointerId);el.classList.add('pressed');
-  action();
+  el.setPointerCapture(e.pointerId);el.classList.add('pressed');action();
  });
  function end(e){
   if(pointerId!==e.pointerId)return;
@@ -1994,16 +2035,94 @@ function bindTouchButton(id,action,release){
  }
  el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
 }
-bindTouchButton('touchPass',()=>startCharge('pass','touch'),()=>finishCharge('pass','touch'));
-bindTouchButton('touchShot',()=>startCharge('shot','touch'),()=>finishCharge('shot','touch'));
-bindTouchButton('touchSuper',()=>startCharge('superShot','touch'),()=>finishCharge('superShot','touch'));
-bindTouchButton('touchLob',()=>startCharge('lob','touch'),()=>finishCharge('lob','touch'));
-bindTouchButton('touchRun',()=>{touchSprint=true},()=>{touchSprint=false});
-bindTouchButton('touchDribble',()=>dribble());
-bindTouchButton('touchTackle',()=>tackle());
+// Passe / Profundidade / Chute: segurar carrega a força, arrastar escolhe o tipo.
+function bindGestureKick(id,baseType,gestureMap){
+ const el=document.querySelector('#'+id);let active=null;
+ el.addEventListener('pointerdown',e=>{
+  if(!mobileMode||!game||paused||active)return;
+  e.preventDefault();e.stopPropagation();
+  active={id:e.pointerId,x:e.clientX,y:e.clientY};
+  el.setPointerCapture(e.pointerId);el.classList.add('pressed');
+  startCharge(baseType,'touch');
+ });
+ el.addEventListener('pointermove',e=>{
+  if(!active||active.id!==e.pointerId)return;
+  e.preventDefault();e.stopPropagation();
+ });
+ function end(e){
+  if(!active||active.id!==e.pointerId)return;
+  e.preventDefault();e.stopPropagation();
+  const dx=e.clientX-active.x,dy=e.clientY-active.y;
+  el.classList.remove('pressed');active=null;
+  if(e.type==='pointercancel'){if(charge.source==='touch')cancelCharge();return}
+  let gesture='tap';
+  if(Math.hypot(dx,dy)>20)gesture=Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy<0?'up':'down');
+  let kind=gestureMap[gesture]||baseType;
+  if(kind==='superShot'&&charge.actor&&charge.actor.stamina<50)kind='shot';
+  if(charge.source==='touch'&&charge.type===baseType){charge.type=kind;finishCharge(kind,'touch')}
+ }
+ el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
+}
+bindGestureKick('touchPass','pass',{up:'lob'});
+bindGestureKick('touchThrough','through',{up:'lobThrough'});
+bindGestureKick('touchShot','shot',{up:'lobShot',down:'finesseShot',right:'superShot'});
+// O botão principal muda com a posse: tocar = habilidade/desarme, segurar = sprint.
+function bindSprintAction(id,onTap,pressFlag){
+ const el=document.querySelector('#'+id);let active=null;
+ el.addEventListener('pointerdown',e=>{
+  if(!mobileMode||!game||paused||active)return;
+  e.preventDefault();e.stopPropagation();active={id:e.pointerId,time:performance.now(),x:e.clientX,y:e.clientY};
+  el.setPointerCapture(e.pointerId);el.classList.add('pressed');
+  touchSprint=true;if(pressFlag)touchPressTackle=true;
+ });
+ function end(e){
+  if(!active||active.id!==e.pointerId)return;
+  e.preventDefault();e.stopPropagation();
+  const duration=performance.now()-active.time,displacement=Math.hypot(e.clientX-active.x,e.clientY-active.y);
+  active=null;el.classList.remove('pressed');touchSprint=false;
+  if(pressFlag)touchPressTackle=false;
+  if(e.type==='pointerup'&&duration<210&&displacement<30)onTap();
+ }
+ el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
+}
+bindSprintAction('touchSprintSkill',dribble,false);
+bindSprintAction('touchSprintTackle',tackle,true);
+bindTouchButton('touchSecondDef',()=>{touchSecondDef=true},()=>{touchSecondDef=false});
 bindTouchButton('touchSwitch',()=>switchPlayer());
+bindTouchButton('touchSlide',()=>slideTackle());
+bindTouchButton('touchSuper',()=>startCharge('superShot','touch'),()=>finishCharge('superShot','touch'));
 bindTouchButton('touchKeeper',()=>toggleGoalkeeperRush());
-// No celular, a mira é feita exclusivamente pelo joystick, não pelo toque no campo.
+// Carrinho é mais longo que um desarme comum, mas arriscado (pode ser falta).
+function slideTackle(){
+ if(!game||paused||restart||kickoffCountdown||goalSequence||disciplineSequence||!selected||selected.keeper)return;
+ const p=selected,opponent=owner&&owner.team===1?owner:null;
+ if(!beginTackle(p))return;
+ const dirX=opponent?pos(opponent).x-pos(p).x:Math.sin(p.group.rotation.y);
+ const dirZ=opponent?pos(opponent).z-pos(p).z:Math.cos(p.group.rotation.y);
+ const d=Math.hypot(dirX,dirZ)||1;
+ pos(p).x=clamp(pos(p).x+dirX/d*.7,-EDGE_X,EDGE_X);
+ pos(p).z=clamp(pos(p).z+dirZ/d*.7,-EDGE_Z,EDGE_Z);
+ if(opponent&&d2(pos(p),pos(opponent))<2.55){
+  if(tryFoul(p,opponent,false))return;
+  if(Math.random()<.66&&opponent.dribbleTime<=0)attachBall(p);
+ }
+}
+// Enquanto SEGUNDO DEFENSOR está pressionado, um colega acompanha o adversário.
+function updateSecondDefender(dt){
+ if(!mobileMode||!touchSecondDef||!owner||owner.team!==1||paused||restart)return;
+ const target=pos(owner);
+ const candidates=home.slice(0,10).filter(p=>p!==selected&&!p.sentOff);
+ if(!candidates.length)return;
+ const defender=candidates.reduce((a,b)=>d2(pos(a),target)<d2(pos(b),target)?a:b);
+ move(defender,clamp(target.x-.5,-EDGE_X,EDGE_X),clamp(target.z,-EDGE_Z,EDGE_Z),11.9,dt);
+ if(d2(pos(defender),target)<1.25&&defender.cool<=0){
+  if(beginTackle(defender)){
+   if(tryFoul(defender,owner,true))return;
+   if(Math.random()<.38&&owner.dribbleTime<=0)attachBall(defender);
+  }
+ }
+}
+// No celular, a mira principal é feita pelo joystick, não pelo toque no campo.
 canvas.addEventListener('pointerdown',e=>{
  if(mobileMode){e.preventDefault();e.stopPropagation()}
 });
@@ -2100,7 +2219,7 @@ function loop(now){
     updateRestart(dt);
     if(restart&&restart.phase==='ready')updateBall(dt);
    }else{
-    userControl(dt);aiTeam(1,dt);aiTeam(0,dt);
+    userControl(dt);aiTeam(1,dt);aiTeam(0,dt);updateSecondDefender(dt);
     resolvePlayerCollisions();
     for(const p of [home[10],away[10]]){
      if(owner!==p){
@@ -2169,7 +2288,7 @@ function loop(now){
   camera.position.z+=((cameraLookZ+40)-camera.position.z)*easing;
   camera.lookAt(cameraLookX,0,cameraLookZ);
  }
- updateStaminaHUD();updateBallVisualRotation(dt);updateAimGraphics();drawRadar();renderer.render(scene,camera);document.querySelector('#bootStatus').style.display='none';requestAnimationFrame(loop)
+ updateTouchControlMode();updateStaminaHUD();updateBallVisualRotation(dt);updateAimGraphics();drawRadar();renderer.render(scene,camera);document.querySelector('#bootStatus').style.display='none';requestAnimationFrame(loop)
 }
 try { requestAnimationFrame(loop); }
 catch(error){document.querySelector('#bootStatus').textContent='Erro ao iniciar o jogo: '+error.message;console.error(error)}
